@@ -17,7 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class FetchDataAPI extends AsyncTask {
     @Override
-    protected Object doInBackground(Object[] objects) {
+    protected List<Post> doInBackground(Object[] objects) {
         Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.coingecko.com/api/v3/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
         CoinGeckoAPI coinGeckoAPI = retrofit.create(CoinGeckoAPI.class);

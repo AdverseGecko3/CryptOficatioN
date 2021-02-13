@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -25,55 +26,58 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
-    private DataClass dc = new DataClass();
-
-    List<Post> cryptoList = new ArrayList<>();
+    final private DataClass dc = new DataClass();
 
     private RecyclerView rwCrypto;
+    private SwipeRefreshLayout srlReloadData;
     private RecyclerViewCryptoListAdapter rwCryptoAdapter;
     private RecyclerView.LayoutManager rwCryptoManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.anim_fade_out_slow, R.anim.anim_fade_in_slow);
         setContentView(R.layout.activity_main);
-        
+        references();
+
+        // Insert custom toolbar
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setCustomView(R.layout.toolbar_home);
         getSupportActionBar().setElevation(10);
+        getSupportActionBar().set
 
-        rwCrypto = findViewById(R.id.rwCryptoListList);
-        try {
-            cryptoList = (List<Post>) new FetchDataAPI().execute().get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        // SwipeRefreshLayout listener and customization
+        srlReloadData.setOnRefreshListener(this);
+        srlReloadData.setColorSchemeResources(android.R.color.holo_purple,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_dark,
+                android.R.color.holo_blue_dark);
 
-        Log.d("MainActivity", "cryptoList size: " + cryptoList.size());
+        /**
+         * Showing Swipe Refresh animation on activity create
+         * As animation won't start on onCreate, post runnable is used
+         */
+        srlReloadData.post(() -> {
 
-        for (Post crypto: cryptoList) {
-            Log.d("MainActivity", crypto.toString());
-        }
+            srlReloadData.setRefreshing(true);
 
-        rwCryptoManager = new LinearLayoutManager(this);
-        rwCryptoAdapter = new RecyclerViewCryptoListAdapter(this, new ArrayList<>(cryptoList));
-
-        rwCrypto.setHasFixedSize(true);
-        rwCrypto.setAdapter(rwCryptoAdapter);
-        rwCrypto.setLayoutManager(rwCryptoManager);
+            // Fetching data from server
+            loadDataCrypto();
+        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate menu and find items on it
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         final MenuItem searchItem = menu.findItem(R.id.mnSearch);
         final SearchView searchView = (SearchView) searchItem.getActionView();
+
+        // SearchView and searchItem listeners
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
         searchView.setIconified(false);
 
@@ -95,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onMenuItemActionExpand(MenuItem item) {
                 Toast.makeText(MainActivity.this, "sa abierto", Toast.LENGTH_SHORT).show();
                 searchView.onActionViewExpanded();
-                return true; // KEEP IT TO TRUE OR IT DOESN'T OPEN !!
+                return true; // KEEP IT TO TRUE OR IT WON'T OPEN !!
             }
 
             @Override
@@ -121,5 +125,45 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        // When refreshing, load crypto data again
+        loadDataCrypto();
+    }
+
+    private void loadDataCrypto() {
+        // Showing refresh animation before making api call
+        srlReloadData.setRefreshing(true);
+
+        // Get the data from the API and put the returned list into the list in DataClass
+        try {
+            dc.cryptoList = (List<Post>) new FetchDataAPI().execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // Check cryptoList size
+        Log.d("MainActivity", "cryptoList size: " + dc.cryptoList.size());
+
+        // Initialize RecyclerView manager and adapter
+        rwCryptoManager = new LinearLayoutManager(this);
+        rwCryptoAdapter = new RecyclerViewCryptoListAdapter(this, new ArrayList<>(dc.cryptoList));
+
+        // Set RecyclerView manager and adapter
+        rwCrypto.setHasFixedSize(true);
+        rwCrypto.setLayoutManager(rwCryptoManager);
+        rwCrypto.setAdapter(rwCryptoAdapter);
+
+        // Stopping swipe refresh
+        srlReloadData.setRefreshing(false);
+    }
+
+    private void references() {
+        rwCrypto = findViewById(R.id.rwCryptoListList);
+        srlReloadData = findViewById(R.id.srlReloadData);
     }
 }

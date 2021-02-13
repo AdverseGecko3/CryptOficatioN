@@ -9,4 +9,27 @@
     <string name="HOLDER_CRYPTO_HIGH_24H">9999</string>
     <string name="HOLDER_CRYPTO_LOW_24H">9999</string>
     <string name="HOLDER_CRYPTO_PRICE_CHANGE_PERCENTAGE_24H">99%</string>
+
+    <string name="NAME">Name</string>
+    <string name="SYMBOL">Symbol</string>
+    <string name="CURRENT_PRICE">Current price</string>
+    <string name="PRICE">Price</string>
+    <string name="MARKET_CAP_RANK">Market Cap Rank</string>
+    <string name="HIGH_24H">High 24h</string>
+    <string name="LOW_24H">Low 24h</string>
+    <string name="PRICE_CHANGE_PERCENTAGE_24H">Price change 24h</string>
+    <string name="CHANGE">Change</string>
+    <string name="CLOSE">Close</string>
+    <string name="TITLE">Title</string>
+    <string name="CONTENT">Content</string>
+    <string name="POWERED_BY">Powered by CoinGecko API</string>
+
+    <string name="NAME_DOTS">Name:</string>
+    <string name="SYMBOL_DOTS">Symbol:</string>
+    <string name="CURRENT_PRICE_DOTS">Current price:</string>
+    <string name="MARKET_CAP_RANK_DOTS">Market Cap Rank:</string>
+    <string name="HIGH_24H_DOTS">High 24h:</string>
+    <string name="LOW_24H_DOTS">Low 24h:</string>
+    <string name="PRICE_CHANGE_PERCENTAGE_24H_DOTS">Price change 24h:</string>
+    <string name="TITLE_DOTS">Title:</string>
 </resources>
