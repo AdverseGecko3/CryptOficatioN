@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setCustomView(R.layout.toolbar_home);
         getSupportActionBar().setElevation(10);
-        getSupportActionBar().set
 
         // SwipeRefreshLayout listener and customization
         srlReloadData.setOnRefreshListener(this);
