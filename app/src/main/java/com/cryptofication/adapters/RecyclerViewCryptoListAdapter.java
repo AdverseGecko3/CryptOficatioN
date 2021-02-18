@@ -1,8 +1,14 @@
 package com.cryptofication.adapters;
 
 import android.app.AlertDialog;
+import android.content.AsyncQueryHandler;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,10 +25,14 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cryptofication.R;
-import com.cryptofication.activities.MainActivity;
 import com.cryptofication.objects.Post;
+import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,36 +102,18 @@ public class RecyclerViewCryptoListAdapter extends RecyclerView.Adapter<Recycler
             tvAdapterDialogCryptoCurrentPriceText.setText(currentPrice + "€");
             builder.setView(v);
             final AlertDialog alertDialog = builder.create();
-            btnAdapterDialogCryptoClose.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    alertDialog.dismiss();
-                }
-            });
+            btnAdapterDialogCryptoClose.setOnClickListener(view1 -> alertDialog.dismiss());
             alertDialog.show();
         });
 
-        /*
-        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("PokemonAdapter", "onClick: clicked row: " + cryptoList.get(position));
 
-                Toast.makeText(context, "onClick: clicked row: " + cryptoList.get(position), Toast.LENGTH_SHORT).show();
-
-                Post selectedPokemon = cryptoList.get(position);
-
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("pokemonSelected", (Serializable) selectedPokemon);
-
-
-                Intent intent = new Intent(context, PokemonActivity.class);
-                intent.putExtras(bundle);
-                context.startActivity(intent);
-
-            }
+        holder.parentLayout.setOnLongClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext(), R.style.CustomAlertDialog);
+            View v = LayoutInflater.from(context).inflate(R.layout.crypto_detail_dialog, null);
+            references(v);
+            return false;
         });
-        */
+
     }
 
     private void references(View v) {
@@ -174,7 +167,7 @@ public class RecyclerViewCryptoListAdapter extends RecyclerView.Adapter<Recycler
     };
 
     public class ViewHolderCryptoList extends RecyclerView.ViewHolder {
-
+        ImageView ivCryptoIcon;
         TextView tvCryptoSymbol;
         TextView tvCryptoName;
         TextView tvCryptoPrice;
@@ -183,6 +176,7 @@ public class RecyclerViewCryptoListAdapter extends RecyclerView.Adapter<Recycler
 
         public ViewHolderCryptoList(@NonNull View itemView) {
             super(itemView);
+            ivCryptoIcon = itemView.findViewById(R.id.ivAdapterCryptoIcon);
             tvCryptoSymbol = itemView.findViewById(R.id.tvAdapterCryptoSymbol);
             tvCryptoName = itemView.findViewById(R.id.tvAdapterCryptoName);
             tvCryptoPrice = itemView.findViewById(R.id.tvAdapterCryptoPrice);
@@ -191,6 +185,8 @@ public class RecyclerViewCryptoListAdapter extends RecyclerView.Adapter<Recycler
         }
 
         public void assignData(Post post) {
+            Picasso.get().load(post.getImage()).into(ivCryptoIcon);
+
             tvCryptoSymbol.setText(post.getSymbol());
             tvCryptoName.setText(post.getName());
             String currentPrice = String.format("%.5f", post.getCurrentPrice()).replaceAll("0+$", "");
@@ -206,4 +202,16 @@ public class RecyclerViewCryptoListAdapter extends RecyclerView.Adapter<Recycler
             }
         }
     }
+
+    private Drawable drawableFromUrl(String url) throws IOException {
+        Bitmap x;
+
+        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+        connection.connect();
+        InputStream input = connection.getInputStream();
+
+        x = BitmapFactory.decodeStream(input);
+        return new BitmapDrawable(Resources.getSystem(), x);
+    }
+
 }

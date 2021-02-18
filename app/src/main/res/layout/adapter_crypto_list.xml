@@ -6,47 +6,76 @@
     android:padding="5dp"
     android:id="@+id/parentLayout">
 
+    <ImageView
+        android:id="@+id/ivAdapterCryptoIcon"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_weight="4" />
+
     <TextView
         android:id="@+id/tvAdapterCryptoSymbol"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginEnd="2dp"
-        android:layout_weight="3"
-        android:gravity="end|center_vertical"
-        android:text="@string/HOLDER_CRYPTO_SYMBOL"
-        android:textColor="@color/white"
-        android:textSize="13sp" />
-
-    <TextView
-        android:id="@+id/tvAdapterCryptoName"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:layout_marginStart="2dp"
         android:layout_marginEnd="2dp"
-        android:layout_weight="2"
-        android:gravity="center|center_vertical"
+        android:layout_weight="4"
+        android:gravity="center_vertical"
         android:text="@string/HOLDER_CRYPTO_NAME"
         android:textColor="@color/white"
-        android:textSize="13sp" />
+        android:textSize="17sp" />
 
-    <TextView
-        android:id="@+id/tvAdapterCryptoPrice"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="2dp"
-        android:layout_marginEnd="2dp"
-        android:layout_weight="3"
-        android:gravity="center_vertical"
-        android:text="@string/HOLDER_CRYPTO_CURRENT_PRICE"
-        android:textColor="@color/white"
-        android:textSize="13sp" />
+        android:orientation="vertical"
+        android:layout_weight="2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+
+
+            <TextView
+                android:id="@+id/tvAdapterCryptoName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                android:gravity="start|center_vertical"
+                android:text="@string/HOLDER_CRYPTO_SYMBOL"
+                android:textColor="@color/white"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tvAdapterCryptoPrice"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="@string/HOLDER_CRYPTO_NAME"
+                android:textColor="@color/white"
+                android:textSize="17sp" />
+        </LinearLayout>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tvAdapterCryptoPriceChange"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="2dp"
-        android:layout_weight="3"
+        android:layout_weight="4"
         android:gravity="center_vertical"
         android:text="@string/HOLDER_CRYPTO_PRICE_CHANGE_PERCENTAGE_24H"
         android:textColor="@color/white"

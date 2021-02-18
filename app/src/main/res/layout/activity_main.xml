@@ -7,69 +7,16 @@
     android:background="@color/super_dark_purple"
     tools:context=".activities.MainActivity">
 
-    <LinearLayout
-        android:id="@+id/llTopRow"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:orientation="horizontal"
-        android:padding="5dp"
-        app:layout_constraintBottom_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/srlReloadData">
-
-        <TextView
-            android:id="@+id/tvAdapterCryptoSymbol"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="2dp"
-            android:layout_weight="3"
-            android:gravity="end|center_vertical"
-            android:text="@string/SYMBOL"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="2dp"
-            android:layout_marginEnd="2dp"
-            android:layout_weight="2"
-            android:gravity="center|center_vertical"
-            android:text="@string/NAME"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="2dp"
-            android:layout_marginEnd="2dp"
-            android:layout_weight="3"
-            android:gravity="center_vertical"
-            android:text="@string/PRICE"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="2dp"
-            android:layout_weight="3"
-            android:gravity="center_vertical"
-            android:text="@string/PRICE"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
-    </LinearLayout>
-
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/srlReloadData"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:padding="2dp"
+        android:background="@drawable/recyclerview_border_round"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/llTopRow">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rwCryptoListList"

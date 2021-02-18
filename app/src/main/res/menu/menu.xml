@@ -1,17 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/mnSearch"
+    <item
+        android:id="@+id/mnSearch"
         android:icon="@drawable/ic_search"
         android:title="Search"
-        app:showAsAction="always|collapseActionView"
-        app:actionViewClass="android.widget.SearchView" />
-    <item android:id="@+id/mnMenu1"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="always|collapseActionView" />
+    <item
+        android:id="@+id/mnFilter"
+        android:icon="@drawable/ic_filter"
+        android:title="Filter"
+        app:showAsAction="always|collapseActionView">
+
+        <menu>
+            <group android:id="@+id/mnGroupFilterType" android:checkableBehavior="single">
+                <item
+                    android:id="@+id/mnFilterOptionTitle"
+                    android:title="Filter Type"
+                    android:checkable="false"/>
+                <item
+                    android:id="@+id/mnFilterOptionName"
+                    android:title="Name"/>
+                <item
+                    android:id="@+id/mnFilterOptionSymbol"
+                    android:title="Symbol" />
+                <item
+                    android:id="@+id/mnFilterOptionPrice"
+                    android:title="Price"/>
+            </group>
+            <group android:id="@+id/mnGroupFilterOrder" android:checkableBehavior="single">
+                <item
+                    android:id="@+id/mnFilterOrderTitle"
+                    android:title="Filter Order"
+                    android:checkable="false"/>
+                <item
+                    android:id="@+id/mnFilterOptionAscending"
+                    android:title="Ascending"/>
+                <item
+                    android:id="@+id/mnFilterOptionDescending"
+                    android:title="Descending" />
+            </group>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/mnManageFavorites"
         android:icon="@drawable/ic_star"
         android:title="Manage favorites"
-        app:showAsAction="never"/>
-    <item android:id="@+id/mnMenu2"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/mnAbout"
         android:icon="@drawable/ic_info"
         android:title="About"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
 </menu>

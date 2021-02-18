@@ -12,6 +12,22 @@ public class Post {
     private float low_24h;
     private float price_change_percentage_24h;
 
+    public Post() {
+
+    }
+
+    public Post(String id, String name, String symbol, String image, double current_price, int market_cap_rank, float high_24h, float low_24h, float price_change_percentage_24h) {
+        this.id = id;
+        this.name = name;
+        this.symbol = symbol;
+        this.image = image;
+        this.current_price = current_price;
+        this.market_cap_rank = market_cap_rank;
+        this.high_24h = high_24h;
+        this.low_24h = low_24h;
+        this.price_change_percentage_24h = price_change_percentage_24h;
+    }
+
     public String getId() {
         return id;
     }

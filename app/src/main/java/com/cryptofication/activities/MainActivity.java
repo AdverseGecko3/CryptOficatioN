@@ -1,12 +1,14 @@
 package com.cryptofication.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -23,6 +25,7 @@ import com.cryptofication.classes.DataClass;
 import com.cryptofication.objects.Post;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -38,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        overridePendingTransition(R.anim.anim_fade_out_slow, R.anim.anim_fade_in_slow);
+        overridePendingTransition(R.anim.anim_fade_in_slow, R.anim.anim_fade_out_slow);
         setContentView(R.layout.activity_main);
         references();
 
@@ -60,9 +63,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
          * As animation won't start on onCreate, post runnable is used
          */
         srlReloadData.post(() -> {
-
-            srlReloadData.setRefreshing(true);
-
             // Fetching data from server
             loadDataCrypto();
         });
@@ -96,14 +96,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
-                Toast.makeText(MainActivity.this, "sa abierto", Toast.LENGTH_SHORT).show();
+                Log.d("MainActivity", "Opened search");
                 searchView.onActionViewExpanded();
                 return true; // KEEP IT TO TRUE OR IT WON'T OPEN !!
             }
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
-                Toast.makeText(MainActivity.this, "sa cerrao", Toast.LENGTH_SHORT).show();
+                Log.d("MainActivity", "Closed search");
                 rwCryptoAdapter.getFilter().filter("");
                 searchView.onActionViewCollapsed();
                 searchView.setQuery("", false);
@@ -117,9 +117,25 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.mnMenu1:
+            case R.id.mnFilterOptionName:
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    changeSortRecyclerView(1);
+                }
                 return true;
-            case R.id.mnMenu2:
+            case R.id.mnFilterOptionSymbol:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    changeSortRecyclerView(2);
+                }
+                return true;
+            case R.id.mnFilterOptionPrice:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    changeSortRecyclerView(3);
+                }
+                return true;
+            case R.id.mnManageFavorites:
+                return true;
+            case R.id.mnAbout:
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -144,6 +160,45 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        // Check cryptoList size
+        Log.d("MainActivity", "cryptoList size: " + dc.cryptoList.size());
+
+        // Initialize RecyclerView manager and adapter
+        rwCryptoManager = new LinearLayoutManager(this);
+        rwCryptoAdapter = new RecyclerViewCryptoListAdapter(this, new ArrayList<>(dc.cryptoList));
+
+        // Set RecyclerView manager and adapter
+        rwCrypto.setHasFixedSize(true);
+        rwCrypto.setLayoutManager(rwCryptoManager);
+        rwCrypto.setAdapter(rwCryptoAdapter);
+
+        // Stopping swipe refresh
+        srlReloadData.setRefreshing(false);
+    }
+
+    private void changeSortRecyclerView(int type) {
+        switch (type) {
+            case 1:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    dc.cryptoList.sort(Comparator.comparing(Post::getName));
+                }
+                break;
+            case 2:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    dc.cryptoList.sort(Comparator.comparing(Post::getSymbol));
+                }
+                break;
+            case 3:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    dc.cryptoList.sort(Comparator.comparing(Post::getCurrentPrice));
+                }
+                break;
+            default:
+                break;
+        }
+        // Showing refresh animation before making api call
+        srlReloadData.setRefreshing(true);
 
         // Check cryptoList size
         Log.d("MainActivity", "cryptoList size: " + dc.cryptoList.size());
