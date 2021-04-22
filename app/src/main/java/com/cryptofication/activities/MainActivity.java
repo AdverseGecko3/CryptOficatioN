@@ -1,13 +1,14 @@
 package com.cryptofication.activities;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.annotation.SuppressLint;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,8 +26,11 @@ import com.cryptofication.classes.DataClass;
 import com.cryptofication.objects.Post;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
@@ -38,6 +42,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private RecyclerViewCryptoListAdapter rwCryptoAdapter;
     private RecyclerView.LayoutManager rwCryptoManager;
 
+    private MenuItem mnFilter, itemName, itemSymbol, itemPrice, itemAscending, itemDescending;
+    private ArrayList<MenuItem> menuItemsOptions = new ArrayList<>();
+    private ArrayList<MenuItem> menuItemsOrder = new ArrayList<>();
+
+    private int lastSelectedItem = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         references();
 
         // Insert custom toolbar
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setCustomView(R.layout.toolbar_home);
         getSupportActionBar().setElevation(10);
@@ -58,21 +68,30 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 android.R.color.holo_orange_dark,
                 android.R.color.holo_blue_dark);
 
-        /**
-         * Showing Swipe Refresh animation on activity create
-         * As animation won't start on onCreate, post runnable is used
-         */
-        srlReloadData.post(() -> {
-            // Fetching data from server
-            loadDataCrypto();
-        });
+        // Fetching data from server
+        srlReloadData.post(this::loadDataCrypto);
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate menu and find items on it
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
+
+        mnFilter = menu.findItem(R.id.mnFilter);
+        itemName = menu.findItem(R.id.mnFilterOptionName);
+        itemSymbol = menu.findItem(R.id.mnFilterOptionSymbol);
+        itemPrice = menu.findItem(R.id.mnFilterOptionPrice);
+        menuItemsOptions.add(itemName);
+        menuItemsOptions.add(itemSymbol);
+        menuItemsOptions.add(itemPrice);
+        itemAscending = menu.findItem(R.id.mnFilterOrderAscending);
+        itemDescending = menu.findItem(R.id.mnFilterOrderDescending);
+        menuItemsOrder.add(itemAscending);
+        menuItemsOrder.add(itemDescending);
+        lastSelectedItem = itemName.getItemId();
+
         final MenuItem searchItem = menu.findItem(R.id.mnSearch);
         final SearchView searchView = (SearchView) searchItem.getActionView();
 
@@ -98,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             public boolean onMenuItemActionExpand(MenuItem item) {
                 Log.d("MainActivity", "Opened search");
                 searchView.onActionViewExpanded();
-                return true; // KEEP IT TO TRUE OR IT WON'T OPEN !!
+                return true; // True to be able to open
             }
 
             @Override
@@ -108,38 +127,96 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 searchView.onActionViewCollapsed();
                 searchView.setQuery("", false);
                 searchView.clearFocus();
-                return true; // OR FALSE IF YOU DIDN'T WANT IT TO CLOSE!
+                return true; // True as we want to be able to close it
             }
         });
         return true;
     }
 
+    @SuppressLint({"NonConstantResourceId", "UseCompatLoadingForDrawables"})
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.mnFilterOptionName:
+        int order = 0;
+        int itemId = item.getItemId();
+        int itemTypeSelected = 0;
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    changeSortRecyclerView(1);
+        if (itemId == R.id.mnFilterOptionName) {
+            if (lastSelectedItem == R.id.mnFilterOptionName) {
+                if (itemAscending.isChecked()) {
+                    itemDescending.setChecked(true);
+                    order = 1;
+                } else {
+                    itemAscending.setChecked(true);
+                    order = 0;
                 }
-                return true;
-            case R.id.mnFilterOptionSymbol:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    changeSortRecyclerView(2);
+            } else {
+                item.setChecked(true);
+                itemAscending.setChecked(true);
+                order = 0;
+            }
+            lastSelectedItem = itemId;
+            itemTypeSelected = 0;
+        } else if (itemId == R.id.mnFilterOptionSymbol) {
+            if (lastSelectedItem == R.id.mnFilterOptionSymbol) {
+                if (itemAscending.isChecked()) {
+                    itemDescending.setChecked(true);
+                    order = 1;
+                } else {
+                    itemAscending.setChecked(true);
+                    order = 0;
                 }
-                return true;
-            case R.id.mnFilterOptionPrice:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    changeSortRecyclerView(3);
+            } else {
+                item.setChecked(true);
+                itemAscending.setChecked(true);
+                order = 0;
+            }
+            lastSelectedItem = itemId;
+            itemTypeSelected = 1;
+        } else if (itemId == R.id.mnFilterOptionPrice) {
+            if (lastSelectedItem == R.id.mnFilterOptionPrice) {
+                if (itemAscending.isChecked()) {
+                    itemDescending.setChecked(true);
+                    order = 1;
+                } else {
+                    itemAscending.setChecked(true);
+                    order = 0;
                 }
-                return true;
-            case R.id.mnManageFavorites:
-                return true;
-            case R.id.mnAbout:
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+            } else {
+                item.setChecked(true);
+                itemAscending.setChecked(true);
+                order = 0;
+            }
+            lastSelectedItem = itemId;
+            itemTypeSelected = 2;
+        } else if (itemId == R.id.mnFilterOrderAscending) {
+            itemAscending.setChecked(true);
+            order = 0;
+            if (itemName.isChecked()) {
+                itemTypeSelected = 0;
+            } else if (itemSymbol.isChecked()) {
+                itemTypeSelected = 1;
+            } else {
+                itemTypeSelected = 2;
+            }
+        } else if (itemId == R.id.mnFilterOrderDescending) {
+            itemDescending.setChecked(true);
+            order = 1;
+            if (itemName.isChecked()) {
+                itemTypeSelected = 0;
+            } else if (itemSymbol.isChecked()) {
+                itemTypeSelected = 1;
+            } else {
+                itemTypeSelected = 2;
+            }
+        } else {
+            Toast.makeText(this, "xd", Toast.LENGTH_LONG).show();
         }
+
+        if (itemId != R.id.mnFilter) {
+            changeSortRecyclerView(itemTypeSelected, order);
+        }
+        return true;
+
     }
 
     @Override
@@ -155,9 +232,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         // Get the data from the API and put the returned list into the list in DataClass
         try {
             dc.cryptoList = (List<Post>) new FetchDataAPI().execute().get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
 
@@ -177,21 +252,30 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         srlReloadData.setRefreshing(false);
     }
 
-    private void changeSortRecyclerView(int type) {
+    private void changeSortRecyclerView(int type, int order) {
         switch (type) {
-            case 1:
+            case 0:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     dc.cryptoList.sort(Comparator.comparing(Post::getName));
+                    if (order == 1) {
+                        Collections.reverse(dc.cryptoList);
+                    }
+                }
+                break;
+            case 1:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    dc.cryptoList.sort(Comparator.comparing(Post::getSymbol));
+                    if (order == 1) {
+                        Collections.reverse(dc.cryptoList);
+                    }
                 }
                 break;
             case 2:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    dc.cryptoList.sort(Comparator.comparing(Post::getSymbol));
-                }
-                break;
-            case 3:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     dc.cryptoList.sort(Comparator.comparing(Post::getCurrentPrice));
+                    if (order == 1) {
+                        Collections.reverse(dc.cryptoList);
+                    }
                 }
                 break;
             default:

@@ -109,7 +109,7 @@ public class RecyclerViewCryptoListAdapter extends RecyclerView.Adapter<Recycler
 
         holder.parentLayout.setOnLongClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext(), R.style.CustomAlertDialog);
-            View v = LayoutInflater.from(context).inflate(R.layout.crypto_detail_dialog, null);
+            View v = LayoutInflater.from(context).inflate(R.layout.crypto_market_exchange_dialog, null);
             references(v);
             return false;
         });
@@ -201,17 +201,6 @@ public class RecyclerViewCryptoListAdapter extends RecyclerView.Adapter<Recycler
                 tvCryptoPriceChange.setTextColor(ContextCompat.getColor(context, R.color.red_low));
             }
         }
-    }
-
-    private Drawable drawableFromUrl(String url) throws IOException {
-        Bitmap x;
-
-        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-        connection.connect();
-        InputStream input = connection.getInputStream();
-
-        x = BitmapFactory.decodeStream(input);
-        return new BitmapDrawable(Resources.getSystem(), x);
     }
 
 }

@@ -12,33 +12,40 @@
         android:icon="@drawable/ic_filter"
         android:title="Filter"
         app:showAsAction="always|collapseActionView">
-
         <menu>
-            <group android:id="@+id/mnGroupFilterType" android:checkableBehavior="single">
+            <group
+                android:id="@+id/mnGroupFilterType"
+                android:checkableBehavior="single">
                 <item
                     android:id="@+id/mnFilterOptionTitle"
-                    android:title="Filter Type"
-                    android:checkable="false"/>
+                    android:checkable="false"
+                    android:enabled="false"
+                    android:title="Filter Type" />
                 <item
                     android:id="@+id/mnFilterOptionName"
-                    android:title="Name"/>
+                    android:checked="true"
+                    android:title="Name" />
                 <item
                     android:id="@+id/mnFilterOptionSymbol"
                     android:title="Symbol" />
                 <item
                     android:id="@+id/mnFilterOptionPrice"
-                    android:title="Price"/>
+                    android:title="Price" />
             </group>
-            <group android:id="@+id/mnGroupFilterOrder" android:checkableBehavior="single">
+            <group
+                android:id="@+id/mnGroupFilterOrder"
+                android:checkableBehavior="single">
                 <item
                     android:id="@+id/mnFilterOrderTitle"
-                    android:title="Filter Order"
-                    android:checkable="false"/>
+                    android:checkable="false"
+                    android:enabled="false"
+                    android:title="Filter Order" />
                 <item
-                    android:id="@+id/mnFilterOptionAscending"
-                    android:title="Ascending"/>
+                    android:id="@+id/mnFilterOrderAscending"
+                    android:checked="true"
+                    android:title="Ascending" />
                 <item
-                    android:id="@+id/mnFilterOptionDescending"
+                    android:id="@+id/mnFilterOrderDescending"
                     android:title="Descending" />
             </group>
         </menu>
