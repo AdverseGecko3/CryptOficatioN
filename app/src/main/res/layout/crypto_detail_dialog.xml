@@ -7,7 +7,7 @@
     android:background="@drawable/dialog_round">
 
     <TextView
-        android:id="@+id/tvAdapterDialogCryptoName"
+        android:id="@+id/tvDialogCryptoDetailName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="5dp"
@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tvAdapterDialogCryptoSymbolTitle"
+        android:id="@+id/tvDialogCryptoDetailSymbolTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -31,14 +31,14 @@
         android:text="@string/SYMBOL_DOTS"
         android:textColor="@color/white"
         android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/tvAdapterDialogCryptoSymbolText"
+        app:layout_constraintEnd_toStartOf="@+id/tvDialogCryptoDetailSymbolText"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_weight="2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvAdapterDialogCryptoName" />
+        app:layout_constraintTop_toBottomOf="@+id/tvDialogCryptoDetailName" />
 
     <TextView
-        android:id="@+id/tvAdapterDialogCryptoSymbolText"
+        android:id="@+id/tvDialogCryptoDetailSymbolText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -49,15 +49,15 @@
         android:gravity="start|center_vertical"
         android:textColor="@color/white"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvAdapterDialogCryptoSymbolTitle"
-        app:layout_constraintEnd_toStartOf="@+id/tvAdapterDialogCryptoHigh24hTitle"
+        app:layout_constraintBottom_toBottomOf="@+id/tvDialogCryptoDetailSymbolTitle"
+        app:layout_constraintEnd_toStartOf="@+id/tvDialogCryptoDetailHigh24hTitle"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toEndOf="@+id/tvAdapterDialogCryptoSymbolTitle"
-        app:layout_constraintTop_toTopOf="@+id/tvAdapterDialogCryptoSymbolTitle" />
+        app:layout_constraintStart_toEndOf="@+id/tvDialogCryptoDetailSymbolTitle"
+        app:layout_constraintTop_toTopOf="@+id/tvDialogCryptoDetailSymbolTitle" />
 
     <TextView
-        android:id="@+id/tvAdapterDialogCryptoHigh24hTitle"
+        android:id="@+id/tvDialogCryptoDetailHigh24hTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
@@ -68,15 +68,15 @@
         android:gravity="end|center_vertical"
         android:textColor="@color/white"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvAdapterDialogCryptoSymbolText"
-        app:layout_constraintEnd_toStartOf="@+id/tvAdapterDialogCryptoHigh24hText"
+        app:layout_constraintBottom_toBottomOf="@+id/tvDialogCryptoDetailSymbolText"
+        app:layout_constraintEnd_toStartOf="@+id/tvDialogCryptoDetailHigh24hText"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_weight="2"
-        app:layout_constraintStart_toEndOf="@+id/tvAdapterDialogCryptoSymbolText"
-        app:layout_constraintTop_toTopOf="@+id/tvAdapterDialogCryptoSymbolText" />
+        app:layout_constraintStart_toEndOf="@+id/tvDialogCryptoDetailSymbolText"
+        app:layout_constraintTop_toTopOf="@+id/tvDialogCryptoDetailSymbolText" />
 
     <TextView
-        android:id="@+id/tvAdapterDialogCryptoHigh24hText"
+        android:id="@+id/tvDialogCryptoDetailHigh24hText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -87,15 +87,15 @@
         android:gravity="start|center_vertical"
         android:textColor="@color/white"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvAdapterDialogCryptoHigh24hTitle"
+        app:layout_constraintBottom_toBottomOf="@+id/tvDialogCryptoDetailHigh24hTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_weight="2"
-        app:layout_constraintStart_toEndOf="@+id/tvAdapterDialogCryptoHigh24hTitle"
-        app:layout_constraintTop_toTopOf="@+id/tvAdapterDialogCryptoHigh24hTitle" />
+        app:layout_constraintStart_toEndOf="@+id/tvDialogCryptoDetailHigh24hTitle"
+        app:layout_constraintTop_toTopOf="@+id/tvDialogCryptoDetailHigh24hTitle" />
 
     <TextView
-        android:id="@+id/tvAdapterDialogCryptoMarketCapRankTitle"
+        android:id="@+id/tvDialogCryptoDetailMarketCapRankTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -106,14 +106,14 @@
         android:gravity="end|center_vertical"
         android:textColor="@color/white"
         android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/tvAdapterDialogCryptoMarketCapRankText"
+        app:layout_constraintEnd_toStartOf="@+id/tvDialogCryptoDetailMarketCapRankText"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_weight="2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvAdapterDialogCryptoHigh24hTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/tvDialogCryptoDetailHigh24hTitle" />
 
     <TextView
-        android:id="@+id/tvAdapterDialogCryptoMarketCapRankText"
+        android:id="@+id/tvDialogCryptoDetailMarketCapRankText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -124,15 +124,15 @@
         android:gravity="start|center_vertical"
         android:textColor="@color/white"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvAdapterDialogCryptoMarketCapRankTitle"
-        app:layout_constraintEnd_toStartOf="@+id/tvAdapterDialogCryptoLow24hTitle"
+        app:layout_constraintBottom_toBottomOf="@+id/tvDialogCryptoDetailMarketCapRankTitle"
+        app:layout_constraintEnd_toStartOf="@+id/tvDialogCryptoDetailLow24hTitle"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toEndOf="@+id/tvAdapterDialogCryptoMarketCapRankTitle"
-        app:layout_constraintTop_toTopOf="@+id/tvAdapterDialogCryptoMarketCapRankTitle" />
+        app:layout_constraintStart_toEndOf="@+id/tvDialogCryptoDetailMarketCapRankTitle"
+        app:layout_constraintTop_toTopOf="@+id/tvDialogCryptoDetailMarketCapRankTitle" />
 
     <TextView
-        android:id="@+id/tvAdapterDialogCryptoLow24hTitle"
+        android:id="@+id/tvDialogCryptoDetailLow24hTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
@@ -143,15 +143,15 @@
         android:gravity="end|center_vertical"
         android:textColor="@color/white"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvAdapterDialogCryptoMarketCapRankText"
-        app:layout_constraintEnd_toStartOf="@+id/tvAdapterDialogCryptoLow24hText"
+        app:layout_constraintBottom_toBottomOf="@+id/tvDialogCryptoDetailMarketCapRankText"
+        app:layout_constraintEnd_toStartOf="@+id/tvDialogCryptoDetailLow24hText"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_weight="2"
-        app:layout_constraintStart_toEndOf="@+id/tvAdapterDialogCryptoMarketCapRankText"
-        app:layout_constraintTop_toTopOf="@+id/tvAdapterDialogCryptoMarketCapRankText" />
+        app:layout_constraintStart_toEndOf="@+id/tvDialogCryptoDetailMarketCapRankText"
+        app:layout_constraintTop_toTopOf="@+id/tvDialogCryptoDetailMarketCapRankText" />
 
     <TextView
-        android:id="@+id/tvAdapterDialogCryptoLow24hText"
+        android:id="@+id/tvDialogCryptoDetailLow24hText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -162,15 +162,15 @@
         android:gravity="start|center_vertical"
         android:textColor="@color/white"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvAdapterDialogCryptoLow24hTitle"
+        app:layout_constraintBottom_toBottomOf="@+id/tvDialogCryptoDetailLow24hTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_weight="2"
-        app:layout_constraintStart_toEndOf="@+id/tvAdapterDialogCryptoLow24hTitle"
-        app:layout_constraintTop_toTopOf="@+id/tvAdapterDialogCryptoLow24hTitle" />
+        app:layout_constraintStart_toEndOf="@+id/tvDialogCryptoDetailLow24hTitle"
+        app:layout_constraintTop_toTopOf="@+id/tvDialogCryptoDetailLow24hTitle" />
 
     <TextView
-        android:id="@+id/tvAdapterDialogCryptoPriceChangePercentage24hTitle"
+        android:id="@+id/tvDialogCryptoDetailPriceChangePercentage24hTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -181,14 +181,14 @@
         android:gravity="end|center_vertical"
         android:textColor="@color/white"
         android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/tvAdapterDialogCryptoPriceChangePercentage24hText"
+        app:layout_constraintEnd_toStartOf="@+id/tvDialogCryptoDetailPriceChangePercentage24hText"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_weight="2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvAdapterDialogCryptoLow24hTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/tvDialogCryptoDetailLow24hTitle" />
 
     <TextView
-        android:id="@+id/tvAdapterDialogCryptoPriceChangePercentage24hText"
+        android:id="@+id/tvDialogCryptoDetailPriceChangePercentage24hText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -199,15 +199,15 @@
         android:gravity="start|center_vertical"
         android:textColor="@color/white"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvAdapterDialogCryptoPriceChangePercentage24hTitle"
-        app:layout_constraintEnd_toStartOf="@+id/tvAdapterDialogCryptoCurrentPriceTitle"
+        app:layout_constraintBottom_toBottomOf="@+id/tvDialogCryptoDetailPriceChangePercentage24hTitle"
+        app:layout_constraintEnd_toStartOf="@+id/tvDialogCryptoDetailCurrentPriceTitle"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toEndOf="@+id/tvAdapterDialogCryptoPriceChangePercentage24hTitle"
-        app:layout_constraintTop_toTopOf="@+id/tvAdapterDialogCryptoPriceChangePercentage24hTitle" />
+        app:layout_constraintStart_toEndOf="@+id/tvDialogCryptoDetailPriceChangePercentage24hTitle"
+        app:layout_constraintTop_toTopOf="@+id/tvDialogCryptoDetailPriceChangePercentage24hTitle" />
 
     <TextView
-        android:id="@+id/tvAdapterDialogCryptoCurrentPriceTitle"
+        android:id="@+id/tvDialogCryptoDetailCurrentPriceTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
@@ -218,15 +218,15 @@
         android:gravity="end|center_vertical"
         android:textColor="@color/white"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvAdapterDialogCryptoPriceChangePercentage24hText"
-        app:layout_constraintEnd_toStartOf="@+id/tvAdapterDialogCryptoCurrentPriceText"
+        app:layout_constraintBottom_toBottomOf="@+id/tvDialogCryptoDetailPriceChangePercentage24hText"
+        app:layout_constraintEnd_toStartOf="@+id/tvDialogCryptoDetailCurrentPriceText"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_weight="2"
-        app:layout_constraintStart_toEndOf="@+id/tvAdapterDialogCryptoPriceChangePercentage24hText"
-        app:layout_constraintTop_toTopOf="@+id/tvAdapterDialogCryptoPriceChangePercentage24hText" />
+        app:layout_constraintStart_toEndOf="@+id/tvDialogCryptoDetailPriceChangePercentage24hText"
+        app:layout_constraintTop_toTopOf="@+id/tvDialogCryptoDetailPriceChangePercentage24hText" />
 
     <TextView
-        android:id="@+id/tvAdapterDialogCryptoCurrentPriceText"
+        android:id="@+id/tvDialogCryptoDetailCurrentPriceText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -237,21 +237,21 @@
         android:gravity="start|center_vertical"
         android:textColor="@color/white"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvAdapterDialogCryptoCurrentPriceTitle"
+        app:layout_constraintBottom_toBottomOf="@+id/tvDialogCryptoDetailCurrentPriceTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_weight="2"
-        app:layout_constraintStart_toEndOf="@+id/tvAdapterDialogCryptoCurrentPriceTitle"
-        app:layout_constraintTop_toTopOf="@+id/tvAdapterDialogCryptoCurrentPriceTitle" />
+        app:layout_constraintStart_toEndOf="@+id/tvDialogCryptoDetailCurrentPriceTitle"
+        app:layout_constraintTop_toTopOf="@+id/tvDialogCryptoDetailCurrentPriceTitle" />
 
     <Button
-        android:id="@+id/btnAdapterDialogCryptoClose"
+        android:id="@+id/btnDialogCryptoDetailClose"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/CLOSE"
         android:layout_margin="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvAdapterDialogCryptoCurrentPriceTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/tvDialogCryptoDetailCurrentPriceTitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

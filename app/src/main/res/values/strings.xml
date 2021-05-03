@@ -32,4 +32,10 @@
     <string name="LOW_24H_DOTS">Low 24h:</string>
     <string name="PRICE_CHANGE_PERCENTAGE_24H_DOTS">Price change 24h:</string>
     <string name="TITLE_DOTS">Title:</string>
+
+    <string name="ADD_FAVORITE">Add as favorite</string>
+    <string name="title_activity_fragment_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>

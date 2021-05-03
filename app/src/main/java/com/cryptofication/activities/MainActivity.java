@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,7 +16,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.cryptofication.R;
 import com.cryptofication.adapters.RecyclerViewCryptoListAdapter;
@@ -26,7 +24,6 @@ import com.cryptofication.classes.DataClass;
 import com.cryptofication.objects.Post;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -42,11 +39,15 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private RecyclerViewCryptoListAdapter rwCryptoAdapter;
     private RecyclerView.LayoutManager rwCryptoManager;
 
-    private MenuItem mnFilter, itemName, itemSymbol, itemPrice, itemAscending, itemDescending;
-    private ArrayList<MenuItem> menuItemsOptions = new ArrayList<>();
-    private ArrayList<MenuItem> menuItemsOrder = new ArrayList<>();
+    private MenuItem itemName;
+    private MenuItem itemSymbol;
+    private MenuItem itemPrice;
+    private MenuItem itemAscending;
+    private MenuItem itemDescending;
+    private final ArrayList<MenuItem> menuItemsOptions = new ArrayList<>();
+    private final ArrayList<MenuItem> menuItemsOrder = new ArrayList<>();
 
-    private int lastSelectedItem = 0;
+    private int lastSelectedFilterItem = 0, type = 0, order = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,10 +80,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
 
-        mnFilter = menu.findItem(R.id.mnFilter);
         itemName = menu.findItem(R.id.mnFilterOptionName);
         itemSymbol = menu.findItem(R.id.mnFilterOptionSymbol);
         itemPrice = menu.findItem(R.id.mnFilterOptionPrice);
+        MenuItem itemPrice = menu.findItem(R.id.mnFilterOptionPrice);
         menuItemsOptions.add(itemName);
         menuItemsOptions.add(itemSymbol);
         menuItemsOptions.add(itemPrice);
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         itemDescending = menu.findItem(R.id.mnFilterOrderDescending);
         menuItemsOrder.add(itemAscending);
         menuItemsOrder.add(itemDescending);
-        lastSelectedItem = itemName.getItemId();
+        lastSelectedFilterItem = itemName.getItemId();
 
         final MenuItem searchItem = menu.findItem(R.id.mnSearch);
         final SearchView searchView = (SearchView) searchItem.getActionView();
@@ -106,8 +107,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
-                rwCryptoAdapter.getFilter().filter(newText);
+            public boolean onQueryTextChange(String query) {
+                rwCryptoAdapter.getFilter().filter(query);
                 return false;
             }
         });
@@ -136,12 +137,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     @SuppressLint({"NonConstantResourceId", "UseCompatLoadingForDrawables"})
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int order = 0;
         int itemId = item.getItemId();
-        int itemTypeSelected = 0;
 
         if (itemId == R.id.mnFilterOptionName) {
-            if (lastSelectedItem == R.id.mnFilterOptionName) {
+            if (lastSelectedFilterItem == R.id.mnFilterOptionName) {
                 if (itemAscending.isChecked()) {
                     itemDescending.setChecked(true);
                     order = 1;
@@ -154,10 +153,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 itemAscending.setChecked(true);
                 order = 0;
             }
-            lastSelectedItem = itemId;
-            itemTypeSelected = 0;
+            lastSelectedFilterItem = itemId;
+            type = 0;
         } else if (itemId == R.id.mnFilterOptionSymbol) {
-            if (lastSelectedItem == R.id.mnFilterOptionSymbol) {
+            if (lastSelectedFilterItem == R.id.mnFilterOptionSymbol) {
                 if (itemAscending.isChecked()) {
                     itemDescending.setChecked(true);
                     order = 1;
@@ -170,10 +169,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 itemAscending.setChecked(true);
                 order = 0;
             }
-            lastSelectedItem = itemId;
-            itemTypeSelected = 1;
+            lastSelectedFilterItem = itemId;
+            type = 1;
         } else if (itemId == R.id.mnFilterOptionPrice) {
-            if (lastSelectedItem == R.id.mnFilterOptionPrice) {
+            if (lastSelectedFilterItem == R.id.mnFilterOptionPrice) {
                 if (itemAscending.isChecked()) {
                     itemDescending.setChecked(true);
                     order = 1;
@@ -186,34 +185,34 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 itemAscending.setChecked(true);
                 order = 0;
             }
-            lastSelectedItem = itemId;
-            itemTypeSelected = 2;
+            lastSelectedFilterItem = itemId;
+            type = 2;
         } else if (itemId == R.id.mnFilterOrderAscending) {
             itemAscending.setChecked(true);
             order = 0;
             if (itemName.isChecked()) {
-                itemTypeSelected = 0;
+                type = 0;
             } else if (itemSymbol.isChecked()) {
-                itemTypeSelected = 1;
+                type = 1;
             } else {
-                itemTypeSelected = 2;
+                type = 2;
             }
         } else if (itemId == R.id.mnFilterOrderDescending) {
             itemDescending.setChecked(true);
             order = 1;
             if (itemName.isChecked()) {
-                itemTypeSelected = 0;
+                type = 0;
             } else if (itemSymbol.isChecked()) {
-                itemTypeSelected = 1;
+                type = 1;
             } else {
-                itemTypeSelected = 2;
+                type = 2;
             }
-        } else {
-            Toast.makeText(this, "xd", Toast.LENGTH_LONG).show();
         }
 
-        if (itemId != R.id.mnFilter) {
-            changeSortRecyclerView(itemTypeSelected, order);
+        if (itemId == R.id.mnFilterOptionName || itemId == R.id.mnFilterOptionSymbol ||
+                itemId == R.id.mnFilterOptionPrice || itemId == R.id.mnFilterOrderAscending ||
+                itemId == R.id.mnFilterOrderDescending) {
+            changeSortRecyclerView(type, order);
         }
         return true;
 
@@ -222,6 +221,16 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     @Override
     public void onRefresh() {
         // When refreshing, load crypto data again
+
+        if (itemSymbol.isChecked()) {
+            type = 1;
+        } else if (itemPrice.isChecked()) {
+            type = 2;
+        }
+        if (itemDescending.isChecked()) {
+            order = 1;
+        }
+
         loadDataCrypto();
     }
 
@@ -235,6 +244,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
+
+        changeSortRecyclerView(type, order);
 
         // Check cryptoList size
         Log.d("MainActivity", "cryptoList size: " + dc.cryptoList.size());

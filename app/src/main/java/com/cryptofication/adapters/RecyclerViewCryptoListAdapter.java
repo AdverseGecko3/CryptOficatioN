@@ -1,5 +1,6 @@
 package com.cryptofication.adapters;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.AsyncQueryHandler;
 import android.content.Context;
@@ -66,6 +67,7 @@ public class RecyclerViewCryptoListAdapter extends RecyclerView.Adapter<Recycler
         return holder;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolderCryptoList holder, int position) {
         Log.d("CryptoListAdapter", "onBindViewHolder: called");
@@ -95,7 +97,7 @@ public class RecyclerViewCryptoListAdapter extends RecyclerView.Adapter<Recycler
                 low24h = low24h.substring(0, low24h.length() - 1);
             }
             tvAdapterDialogCryptoLow24hText.setText(low24h + "€");
-            String currentPrice = String.format("%.5f", selectedPost.getCurrentPrice()).replaceAll("0+$", "");
+            @SuppressLint("DefaultLocale") String currentPrice = String.format("%.5f", selectedPost.getCurrentPrice()).replaceAll("0+$", "");
             if (currentPrice.endsWith(".")) {
                 currentPrice = currentPrice.substring(0, currentPrice.length() - 1);
             }
@@ -109,7 +111,7 @@ public class RecyclerViewCryptoListAdapter extends RecyclerView.Adapter<Recycler
 
         holder.parentLayout.setOnLongClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext(), R.style.CustomAlertDialog);
-            View v = LayoutInflater.from(context).inflate(R.layout.crypto_market_exchange_dialog, null);
+            @SuppressLint("InflateParams") View v = LayoutInflater.from(context).inflate(R.layout.crypto_market_exchange_dialog, null);
             references(v);
             return false;
         });
@@ -117,14 +119,14 @@ public class RecyclerViewCryptoListAdapter extends RecyclerView.Adapter<Recycler
     }
 
     private void references(View v) {
-        tvAdapterDialogCryptoName = v.findViewById(R.id.tvAdapterDialogCryptoName);
-        tvAdapterDialogCryptoSymbolText = v.findViewById(R.id.tvAdapterDialogCryptoSymbolText);
-        tvAdapterDialogCryptoMarketCapRankText = v.findViewById(R.id.tvAdapterDialogCryptoMarketCapRankText);
-        tvAdapterDialogCryptoPriceChangePercentage24hText = v.findViewById(R.id.tvAdapterDialogCryptoPriceChangePercentage24hText);
-        tvAdapterDialogCryptoHigh24hText = v.findViewById(R.id.tvAdapterDialogCryptoHigh24hText);
-        tvAdapterDialogCryptoLow24hText = v.findViewById(R.id.tvAdapterDialogCryptoLow24hText);
-        tvAdapterDialogCryptoCurrentPriceText = v.findViewById(R.id.tvAdapterDialogCryptoCurrentPriceText);
-        btnAdapterDialogCryptoClose = v.findViewById(R.id.btnAdapterDialogCryptoClose);
+        tvAdapterDialogCryptoName = v.findViewById(R.id.tvDialogCryptoDetailName);
+        tvAdapterDialogCryptoSymbolText = v.findViewById(R.id.tvDialogCryptoDetailSymbolText);
+        tvAdapterDialogCryptoMarketCapRankText = v.findViewById(R.id.tvDialogCryptoDetailMarketCapRankText);
+        tvAdapterDialogCryptoPriceChangePercentage24hText = v.findViewById(R.id.tvDialogCryptoDetailPriceChangePercentage24hText);
+        tvAdapterDialogCryptoHigh24hText = v.findViewById(R.id.tvDialogCryptoDetailHigh24hText);
+        tvAdapterDialogCryptoLow24hText = v.findViewById(R.id.tvDialogCryptoDetailLow24hText);
+        tvAdapterDialogCryptoCurrentPriceText = v.findViewById(R.id.tvDialogCryptoDetailCurrentPriceText);
+        btnAdapterDialogCryptoClose = v.findViewById(R.id.btnDialogCryptoDetailClose);
     }
 
     @Override
@@ -137,7 +139,7 @@ public class RecyclerViewCryptoListAdapter extends RecyclerView.Adapter<Recycler
         return filter;
     }
 
-    private Filter filter = new Filter() {
+    private final Filter filter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
             List<Post> filteredList = new ArrayList<>();
