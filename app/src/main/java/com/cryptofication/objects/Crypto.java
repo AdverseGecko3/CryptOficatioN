@@ -1,6 +1,6 @@
 package com.cryptofication.objects;
 
-public class Post {
+public class Crypto {
 
     private String id;
     private String name;
@@ -12,11 +12,11 @@ public class Post {
     private float low_24h;
     private float price_change_percentage_24h;
 
-    public Post() {
+    public Crypto() {
 
     }
 
-    public Post(String id, String name, String symbol, String image, double current_price, int market_cap_rank, float high_24h, float low_24h, float price_change_percentage_24h) {
+    public Crypto(String id, String name, String symbol, String image, double current_price, int market_cap_rank, float high_24h, float low_24h, float price_change_percentage_24h) {
         this.id = id;
         this.name = name;
         this.symbol = symbol;

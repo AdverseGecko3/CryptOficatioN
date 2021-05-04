@@ -4,7 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.cryptofication.interfaces.CoinGeckoAPI;
-import com.cryptofication.objects.Post;
+import com.cryptofication.objects.Crypto;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,24 +17,26 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class FetchDataAPI extends AsyncTask {
     @Override
-    protected List<Post> doInBackground(Object[] objects) {
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.coingecko.com/api/v3/")
-                .addConverterFactory(GsonConverterFactory.create()).build();
+    protected List<Crypto> doInBackground(Object[] objects) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.coingecko.com/api/v3/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
         CoinGeckoAPI coinGeckoAPI = retrofit.create(CoinGeckoAPI.class);
 
-        Call<List<Post>> call = coinGeckoAPI.getPosts();
+        Call<List<Crypto>> call = coinGeckoAPI.getPosts();
         Log.d("BackgroundService", "Call received" + call);
 
-        List<Post> cryptoList = new ArrayList<>();
+        List<Crypto> cryptoList = new ArrayList<>();
 
         try {
-            Response<List<Post>> response = call.execute();
+            Response<List<Crypto>> response = call.execute();
             if (!response.isSuccessful()) {
                 Log.d("BackgroundService", String.valueOf(response.code()));
             } else {
-                List<Post> postsList = response.body();
+                List<Crypto> postsList = response.body();
                 Log.d("BackgroundService", postsList.toString());
-                for (Post post: postsList) {
+                for (Crypto post : postsList) {
                     Log.d("BackgroundService", post.toString());
                     cryptoList.add(post);
                 }

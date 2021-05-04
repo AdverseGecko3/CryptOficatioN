@@ -38,4 +38,21 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+
+    <string name="SEARCH">Search</string>
+    <string name="FILTER">Filter</string>
+    <string name="MARKETS">Markets</string>
+    <string name="CONVERSION">Conversion</string>
+    <string name="FAVORITES">Favorites</string>
+    <string name="ABOUT">About</string>
+
+    <string name="FILTER_TYPE">Filter Type</string>
+    <string name="FILTER_NAME">Name</string>
+    <string name="FILTER_SYMBOL">Symbol</string>
+    <string name="FILTER_PRICE">Price</string>
+    <string name="FILTER_ORDER">Filter Order</string>
+    <string name="FILTER_ASCENDING">Ascending</string>
+    <string name="FILTER_DESCENDING">Descending</string>
+
+    <string name="TOOLBAR">Toolbar</string>
 </resources>

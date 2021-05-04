@@ -10,7 +10,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_logo_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CryptOficatioN">
+        android:theme="@style/Theme.CryptOficatioN"
+        android:name="com.cryptofication.classes.ContextApplication">
         <activity android:name=".activities.MainActivity" />
         <activity
             android:name=".activities.SplashActivity"

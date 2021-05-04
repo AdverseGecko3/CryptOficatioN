@@ -7,7 +7,7 @@
     android:background="@drawable/dialog_round">
 
     <TextView
-        android:id="@+id/tvDialogCryptoMenuName"
+        android:id="@+id/tvDialogCryptoOptionsName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="5dp"
@@ -20,49 +20,46 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tvDialogCryptoMenuAddFavorite"
+        android:id="@+id/tvDialogCryptoOptionsAddFavorite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         android:gravity="center|center_vertical"
         android:text="@string/ADD_FAVORITE"
         android:textColor="@color/white"
-        android:textSize="16sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/tvDialogCryptoMenuSymbolTitle"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_weight="2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvDialogCryptoMenuName" />
+        app:layout_constraintTop_toBottomOf="@+id/tvDialogCryptoOptionsName" />
 
     <TextView
         android:id="@+id/tvDialogCryptoMenuSymbolTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
+        android:layout_margin="10dp"
         android:gravity="center|center_vertical"
         android:text="@string/SYMBOL_DOTS"
         android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@+id/tvDialogCryptoMenuAddFavorite"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@+id/tvDialogCryptoOptionsAddFavorite"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_weight="2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!--<Button
-        android:id="@+id/btnDialogCryptoDetailClose"
+    <Button
+        android:id="@+id/btnDialogCryptoOptionsClose"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/CLOSE"
         android:layout_margin="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvDialogCryptoDetailCurrentPriceTitle" />-->
+        app:layout_constraintTop_toBottomOf="@+id/tvDialogCryptoDetailCurrentPriceTitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
