@@ -3,7 +3,6 @@ package com.cryptofication.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import com.cryptofication.R;
@@ -12,7 +11,7 @@ import com.cryptofication.classes.DataClass;
 import com.cryptofication.classes.DatabaseClass;
 import com.cryptofication.fragments.FragmentMarket;
 import com.cryptofication.fragments.FragmentTrade;
-import com.cryptofication.fragments.FragmentAbout;
+import com.cryptofication.fragments.FragmentSettings;
 import com.cryptofication.fragments.FragmentFavorites;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -53,10 +52,10 @@ public class MainActivity extends AppCompatActivity {
                         DataClass.oldItem = DataClass.newItem;
                         DataClass.newItem = Constants.FAVORITES;
                         break;
-                    case Constants.ABOUT:
-                        selectedFragment = new FragmentAbout();
+                    case Constants.SETTINGS:
+                        selectedFragment = new FragmentSettings();
                         DataClass.oldItem = DataClass.newItem;
-                        DataClass.newItem = Constants.ABOUT;
+                        DataClass.newItem = Constants.SETTINGS;
                         break;
                     default:
                         break;
@@ -75,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case Constants.CONVERSION:
                     case Constants.FAVORITES:
-                    case Constants.ABOUT:
+                    case Constants.SETTINGS:
                         getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left).replace(R.id.fragmentShow,
                                 selectedFragment).commit();
                         break;
@@ -94,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                                 selectedFragment).commit();
                         break;
                     case Constants.FAVORITES:
-                    case Constants.ABOUT:
+                    case Constants.SETTINGS:
                         getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left).replace(R.id.fragmentShow,
                                 selectedFragment).commit();
                         break;
@@ -113,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentShow,
                                 selectedFragment).commit();
                         break;
-                    case Constants.ABOUT:
+                    case Constants.SETTINGS:
                         getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left).replace(R.id.fragmentShow,
                                 selectedFragment).commit();
                         break;
@@ -121,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                 }
                 break;
-            case Constants.ABOUT:
+            case Constants.SETTINGS:
                 switch (DataClass.newItem) {
                     case Constants.MARKETS:
                     case Constants.CONVERSION:
@@ -129,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right).replace(R.id.fragmentShow,
                                 selectedFragment).commit();
                         break;
-                    case Constants.ABOUT:
+                    case Constants.SETTINGS:
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentShow,
                                 selectedFragment).commit();
                         break;

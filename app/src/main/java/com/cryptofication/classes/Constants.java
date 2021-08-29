@@ -6,5 +6,5 @@ public class Constants {
     public static final int MARKETS = R.id.nav_markets;
     public static final int CONVERSION = R.id.nav_conversion;
     public static final int FAVORITES = R.id.nav_favorites;
-    public static final int ABOUT = R.id.nav_about;
+    public static final int SETTINGS = R.id.nav_settings;
 }

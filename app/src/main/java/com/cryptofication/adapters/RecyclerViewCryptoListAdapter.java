@@ -3,6 +3,7 @@ package com.cryptofication.adapters;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +17,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cryptofication.R;
+import com.cryptofication.classes.ContextApplication;
 import com.cryptofication.objects.Crypto;
 import com.squareup.picasso.Picasso;
 
@@ -31,6 +34,7 @@ public class RecyclerViewCryptoListAdapter extends RecyclerView.Adapter<Recycler
     private final ArrayList<Crypto> cryptoList;
     private final ArrayList<Crypto> cryptoListFull;
     private final Context context;
+    private String userCurrency;
 
     private TextView tvDialogCryptoDetailName;
     private TextView tvDialogCryptoDetailSymbol;
@@ -63,6 +67,19 @@ public class RecyclerViewCryptoListAdapter extends RecyclerView.Adapter<Recycler
     @Override
     public void onBindViewHolder(@NonNull ViewHolderCryptoList holder, int position) {
         Log.d("CryptoListAdapter", "onBindViewHolder: called");
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ContextApplication.getAppContext());
+        Log.d("algo", sharedPreferences.getString("prefCurrency", ""));
+        switch (sharedPreferences.getString("prefCurrency", "")) {
+            case "eur":
+                userCurrency = context.getString(R.string.CURRENCY_EURO);
+                break;
+            case "usd":
+            default:
+                userCurrency = context.getString(R.string.CURRENCY_DOLLAR);
+                break;
+        }
+
         Crypto selectedPost = cryptoList.get(position);
         holder.assignData(selectedPost);
 
@@ -79,21 +96,21 @@ public class RecyclerViewCryptoListAdapter extends RecyclerView.Adapter<Recycler
             } else {
                 tvDialogCryptoDetailPriceChangePercentage24h.setTextColor(ContextCompat.getColor(context, R.color.red_low));
             }
-            String high24h = String.format("%.5f", selectedPost.getHigh24h()).replaceAll("0+$", "");
+            String high24h = String.format("%.10f", selectedPost.getHigh24h()).replaceAll("0+$", "");
             if (high24h.endsWith(".")) {
                 high24h = high24h.substring(0, high24h.length() - 1);
             }
-            tvDialogCryptoDetailHigh24h.setText(high24h + "€");
-            String low24h = String.format("%.5f", selectedPost.getLow24h()).replaceAll("0+$", "");
+            tvDialogCryptoDetailHigh24h.setText(high24h + userCurrency);
+            String low24h = String.format("%.10f", selectedPost.getLow24h()).replaceAll("0+$", "");
             if (low24h.endsWith(".")) {
                 low24h = low24h.substring(0, low24h.length() - 1);
             }
-            tvDialogCryptoDetailLow24h.setText(low24h + "€");
-            @SuppressLint("DefaultLocale") String currentPrice = String.format("%.5f", selectedPost.getCurrentPrice()).replaceAll("0+$", "");
+            tvDialogCryptoDetailLow24h.setText(low24h + userCurrency);
+            @SuppressLint("DefaultLocale") String currentPrice = String.format("%.10f", selectedPost.getCurrentPrice()).replaceAll("0+$", "");
             if (currentPrice.endsWith(".")) {
                 currentPrice = currentPrice.substring(0, currentPrice.length() - 1);
             }
-            tvDialogCryptoDetailCurrentPrice.setText(currentPrice + "€");
+            tvDialogCryptoDetailCurrentPrice.setText(currentPrice + userCurrency);
             builder.setView(v);
             final AlertDialog alertDialog = builder.create();
             btnDialogCryptoDetailClose.setOnClickListener(view1 -> alertDialog.dismiss());
@@ -172,12 +189,12 @@ public class RecyclerViewCryptoListAdapter extends RecyclerView.Adapter<Recycler
 
             tvCryptoSymbol.setText(crypto.getSymbol());
             tvCryptoName.setText(crypto.getName());
-            @SuppressLint("DefaultLocale") String currentPrice = String.format("%.5f", crypto.getCurrentPrice()).replaceAll("0+$", "");
+            @SuppressLint("DefaultLocale") String currentPrice = String.format("%.10f", crypto.getCurrentPrice()).replaceAll("0+$", "");
             if (currentPrice.endsWith(".")) {
                 currentPrice = currentPrice.substring(0, currentPrice.length() - 1);
             }
             crypto.setCurrentPrice(Double.parseDouble(currentPrice));
-            tvCryptoPrice.setText(currentPrice + "€");
+            tvCryptoPrice.setText(currentPrice + userCurrency);
             @SuppressLint("DefaultLocale") String priceChange = String.format("%.2f", crypto.getPriceChangePercentage24h()).replaceAll("0+$", "");
             if (priceChange.endsWith(".")) {
                 priceChange = currentPrice.substring(0, currentPrice.length() - 1);

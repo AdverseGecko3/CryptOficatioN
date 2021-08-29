@@ -1,8 +1,7 @@
 package com.cryptofication.fragments;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +11,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.cryptofication.classes.ContextApplication;
 import com.cryptofication.classes.DataClass;
 import com.cryptofication.R;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -31,32 +32,23 @@ import android.widget.SearchView;
 
 import com.cryptofication.adapters.RecyclerViewCryptoListAdapter;
 import com.cryptofication.background.FetchDataAPI;
-import com.cryptofication.interfaces.CoinGeckoAPI;
 import com.cryptofication.objects.Crypto;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import retrofit2.Call;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class FragmentMarket extends Fragment {
 
     final private DataClass dc = new DataClass();
 
     private RecyclerView rwCrypto;
-    private SwipeRefreshLayout srlReloadData;
+    private SwipeRefreshLayout srlReloadMarket;
     private RecyclerViewCryptoListAdapter rwCryptoAdapter;
     private RecyclerView.LayoutManager rwCryptoManager;
 
@@ -78,35 +70,32 @@ public class FragmentMarket extends Fragment {
         setHasOptionsMenu(true);
 
         // Insert custom toolbar
-        Objects.requireNonNull(((AppCompatActivity) getActivity()).getSupportActionBar()).setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        Objects.requireNonNull(((AppCompatActivity) getActivity()).getSupportActionBar()).setDisplayShowCustomEnabled(true);
-        Objects.requireNonNull(((AppCompatActivity) getActivity()).getSupportActionBar()).setCustomView(R.layout.toolbar_home);
-        Objects.requireNonNull(((AppCompatActivity) getActivity()).getSupportActionBar()).setElevation(10);
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setDisplayShowCustomEnabled(true);
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setCustomView(R.layout.toolbar_home);
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setElevation(10);
 
         // SwipeRefreshLayout listener and customization
-        srlReloadData.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                // When refreshing, load crypto data again
-                if (itemSymbol.isChecked()) {
-                    type = 1;
-                } else if (itemPrice.isChecked()) {
-                    type = 2;
-                }
-                if (itemDescending.isChecked()) {
-                    order = 1;
-                }
-
-                loadDataCrypto();
+        srlReloadMarket.setOnRefreshListener(() -> {
+            // When refreshing, load crypto data again
+            if (itemSymbol.isChecked()) {
+                type = 1;
+            } else if (itemPrice.isChecked()) {
+                type = 2;
             }
+            if (itemDescending.isChecked()) {
+                order = 1;
+            }
+
+            loadDataCrypto();
         });
-        srlReloadData.setColorSchemeResources(android.R.color.holo_purple,
+        srlReloadMarket.setColorSchemeResources(android.R.color.holo_purple,
                 android.R.color.holo_green_dark,
                 android.R.color.holo_orange_dark,
                 android.R.color.holo_blue_dark);
 
         // Fetching data from server
-        srlReloadData.post(this::loadDataCrypto);
+        srlReloadMarket.post(this::loadDataCrypto);
         return fView;
     }
 
@@ -254,15 +243,17 @@ public class FragmentMarket extends Fragment {
 
     private void loadDataCrypto() {
         // Showing refresh animation before making api call
-        srlReloadData.setRefreshing(true);
+        srlReloadMarket.setRefreshing(true);
 
-        // Get the data from the API and put the returned list into the list in DataClass
         try {
-            dc.cryptoList = (List<Crypto>) new FetchDataAPI().execute().get();
+            String userCurrency = "";
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ContextApplication.getAppContext());
+            Log.d("cositas", sharedPreferences.getString("prefCurrency", ""));
+            userCurrency = sharedPreferences.getString("prefCurrency", "");
+            dc.cryptoList = (List<Crypto>) new FetchDataAPI().execute(userCurrency).get();
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
-
 
         changeSortRecyclerView(type, order);
 
@@ -279,7 +270,7 @@ public class FragmentMarket extends Fragment {
         rwCrypto.setAdapter(rwCryptoAdapter);
 
         // Stopping swipe refresh
-        srlReloadData.setRefreshing(false);
+        srlReloadMarket.setRefreshing(false);
     }
 
     private void changeSortRecyclerView(int type, int order) {
@@ -312,7 +303,7 @@ public class FragmentMarket extends Fragment {
                 break;
         }
         // Showing refresh animation before making api call
-        srlReloadData.setRefreshing(true);
+        srlReloadMarket.setRefreshing(true);
 
         // Check cryptoList size
         Log.d("MainActivity", "cryptoList size: " + dc.cryptoList.size());
@@ -327,11 +318,11 @@ public class FragmentMarket extends Fragment {
         rwCrypto.setAdapter(rwCryptoAdapter);
 
         // Stopping swipe refresh
-        srlReloadData.setRefreshing(false);
+        srlReloadMarket.setRefreshing(false);
     }
 
     private void references(View view) {
         rwCrypto = view.findViewById(R.id.rwCryptoListList);
-        srlReloadData = view.findViewById(R.id.srlReloadData);
+        srlReloadMarket = view.findViewById(R.id.srlReloadMarket);
     }
 }

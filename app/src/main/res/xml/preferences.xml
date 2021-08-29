@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        android:icon="@drawable/ic_currency"
+        android:title="@string/CURRENCY">
+        <ListPreference
+            android:defaultValue="@string/SETTINGS_CURRENCY_VALUE_DEFAULT"
+            android:entries="@array/SETTINGS_CURRENCY_ENTRIES"
+            android:entryValues="@array/SETTINGS_CURRENCY_VALUES"
+            android:key="prefCurrency"
+            android:title="@string/SETTINGS_CURRENCY"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+</PreferenceScreen>
