@@ -3,11 +3,19 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/OneDrive/OneDrive - Centre d'Estudis Monlau/Proyectos/Android/CryptOficatioN/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
+        <entry key="..\:/OneDrive/OneDrive - Centre d'Estudis Monlau/Proyectos/Android/CryptOficatioN/app/src/main/res/layout/activity_splash.xml" value="0.36666666666666664" />
+        <entry key="..\:/OneDrive/OneDrive - Centre d'Estudis Monlau/Proyectos/Android/CryptOficatioN/app/src/main/res/layout/adapter_crypto_list.xml" value="0.36666666666666664" />
+        <entry key="..\:/OneDrive/OneDrive - Centre d'Estudis Monlau/Proyectos/Android/CryptOficatioN/app/src/main/res/layout/crypto_detail_dialog.xml" value="0.36666666666666664" />
+        <entry key="..\:/OneDrive/OneDrive - Centre d'Estudis Monlau/Proyectos/Android/CryptOficatioN/app/src/main/res/layout/crypto_options_dialog.xml" value="0.36666666666666664" />
         <entry key="..\:/OneDrive/OneDrive - Centre d'Estudis Monlau/Proyectos/Android/CryptOficatioN/app/src/main/res/layout/fragment_favorites.xml" value="0.36666666666666664" />
         <entry key="..\:/OneDrive/OneDrive - Centre d'Estudis Monlau/Proyectos/Android/CryptOficatioN/app/src/main/res/layout/fragment_market.xml" value="0.36666666666666664" />
         <entry key="..\:/OneDrive/OneDrive - Centre d'Estudis Monlau/Proyectos/Android/CryptOficatioN/app/src/main/res/layout/fragment_settings.xml" value="0.36666666666666664" />
         <entry key="..\:/OneDrive/OneDrive - Centre d'Estudis Monlau/Proyectos/Android/CryptOficatioN/app/src/main/res/layout/fragment_trade.xml" value="0.36666666666666664" />
         <entry key="..\:/OneDrive/OneDrive - Centre d'Estudis Monlau/Proyectos/Android/CryptOficatioN/app/src/main/res/layout/preference_category_custom.xml" value="0.20208333333333334" />
+        <entry key="..\:/OneDrive/OneDrive - Centre d'Estudis Monlau/Proyectos/Android/CryptOficatioN/app/src/main/res/layout/toolbar_home.xml" value="0.36666666666666664" />
+        <entry key="..\:/OneDrive/OneDrive - Centre d'Estudis Monlau/Proyectos/Android/CryptOficatioN/app/src/main/res/menu/bottom_nav.xml" value="0.36666666666666664" />
+        <entry key="..\:/OneDrive/OneDrive - Centre d'Estudis Monlau/Proyectos/Android/CryptOficatioN/app/src/main/res/menu/menu.xml" value="0.36666666666666664" />
         <entry key="..\:/OneDrive/OneDrive - Centre d'Estudis Monlau/Proyectos/Android/CryptOficatioN/app/src/main/res/xml/preferences.xml" value="0.36666666666666664" />
         <entry key="..\:/OneDrive/OneDrive - Centre d'Estudis Monlau/Proyectos/Android/CryptOficatioN/app/src/main/res/xml/root_preferences.xml" value="0.36666666666666664" />
       </map>

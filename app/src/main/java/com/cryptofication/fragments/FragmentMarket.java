@@ -162,74 +162,82 @@ public class FragmentMarket extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
 
-        if (itemId == R.id.mnFilterOptionName) {
-            if (lastSelectedFilterItem == R.id.mnFilterOptionName) {
-                if (itemAscending.isChecked()) {
-                    itemDescending.setChecked(true);
-                    order = 1;
+        switch (itemId) {
+            case R.id.mnFilterOptionName:
+                if (lastSelectedFilterItem == R.id.mnFilterOptionName) {
+                    if (itemAscending.isChecked()) {
+                        itemDescending.setChecked(true);
+                        order = 1;
+                    } else {
+                        itemAscending.setChecked(true);
+                        order = 0;
+                    }
                 } else {
+                    item.setChecked(true);
                     itemAscending.setChecked(true);
                     order = 0;
                 }
-            } else {
-                item.setChecked(true);
-                itemAscending.setChecked(true);
-                order = 0;
-            }
-            lastSelectedFilterItem = itemId;
-            type = 0;
-        } else if (itemId == R.id.mnFilterOptionSymbol) {
-            if (lastSelectedFilterItem == R.id.mnFilterOptionSymbol) {
-                if (itemAscending.isChecked()) {
-                    itemDescending.setChecked(true);
-                    order = 1;
-                } else {
-                    itemAscending.setChecked(true);
-                    order = 0;
-                }
-            } else {
-                item.setChecked(true);
-                itemAscending.setChecked(true);
-                order = 0;
-            }
-            lastSelectedFilterItem = itemId;
-            type = 1;
-        } else if (itemId == R.id.mnFilterOptionPrice) {
-            if (lastSelectedFilterItem == R.id.mnFilterOptionPrice) {
-                if (itemAscending.isChecked()) {
-                    itemDescending.setChecked(true);
-                    order = 1;
-                } else {
-                    itemAscending.setChecked(true);
-                    order = 0;
-                }
-            } else {
-                item.setChecked(true);
-                itemAscending.setChecked(true);
-                order = 0;
-            }
-            lastSelectedFilterItem = itemId;
-            type = 2;
-        } else if (itemId == R.id.mnFilterOrderAscending) {
-            itemAscending.setChecked(true);
-            order = 0;
-            if (itemName.isChecked()) {
+                lastSelectedFilterItem = itemId;
                 type = 0;
-            } else if (itemSymbol.isChecked()) {
+                break;
+            case R.id.mnFilterOptionSymbol:
+                if (lastSelectedFilterItem == R.id.mnFilterOptionSymbol) {
+                    if (itemAscending.isChecked()) {
+                        itemDescending.setChecked(true);
+                        order = 1;
+                    } else {
+                        itemAscending.setChecked(true);
+                        order = 0;
+                    }
+                } else {
+                    item.setChecked(true);
+                    itemAscending.setChecked(true);
+                    order = 0;
+                }
+                lastSelectedFilterItem = itemId;
                 type = 1;
-            } else {
+                break;
+            case R.id.mnFilterOptionPrice:
+                if (lastSelectedFilterItem == R.id.mnFilterOptionPrice) {
+                    if (itemAscending.isChecked()) {
+                        itemDescending.setChecked(true);
+                        order = 1;
+                    } else {
+                        itemAscending.setChecked(true);
+                        order = 0;
+                    }
+                } else {
+                    item.setChecked(true);
+                    itemAscending.setChecked(true);
+                    order = 0;
+                }
+                lastSelectedFilterItem = itemId;
                 type = 2;
-            }
-        } else if (itemId == R.id.mnFilterOrderDescending) {
-            itemDescending.setChecked(true);
-            order = 1;
-            if (itemName.isChecked()) {
-                type = 0;
-            } else if (itemSymbol.isChecked()) {
-                type = 1;
-            } else {
-                type = 2;
-            }
+                break;
+            case R.id.mnFilterOrderAscending:
+                itemAscending.setChecked(true);
+                order = 0;
+                if (itemName.isChecked()) {
+                    type = 0;
+                } else if (itemSymbol.isChecked()) {
+                    type = 1;
+                } else {
+                    type = 2;
+                }
+                break;
+            case R.id.mnFilterOrderDescending:
+                itemDescending.setChecked(true);
+                order = 1;
+                if (itemName.isChecked()) {
+                    type = 0;
+                } else if (itemSymbol.isChecked()) {
+                    type = 1;
+                } else {
+                    type = 2;
+                }
+                break;
+            default:
+                break;
         }
 
         if (itemId == R.id.mnFilterOptionName || itemId == R.id.mnFilterOptionSymbol ||
@@ -248,7 +256,7 @@ public class FragmentMarket extends Fragment {
         try {
             String userCurrency = "";
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ContextApplication.getAppContext());
-            Log.d("cositas", sharedPreferences.getString("prefCurrency", ""));
+            Log.d("SharedPreferences", sharedPreferences.getString("prefCurrency", ""));
             userCurrency = sharedPreferences.getString("prefCurrency", "");
             dc.cryptoList = (List<Crypto>) new FetchDataAPI().execute(userCurrency).get();
         } catch (ExecutionException | InterruptedException e) {

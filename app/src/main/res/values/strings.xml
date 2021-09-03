@@ -31,6 +31,7 @@
     <string name="CURRENCY_EURO">€</string>
     <string name="CURRENCY_DOLLAR">$</string>
     <string name="CURRENCY">Currency</string>
+    <string name="COLOR_SCHEME">Color Scheme</string>
 
     <!--STRINGS DOTS-->
     <string name="NAME_DOTS">Name:</string>
@@ -66,6 +67,7 @@
     <string name="FILTER_DESCENDING">Descending</string>
 
     <!--SETTINGS-->
+    <string name="PREFERENCES">userPrefs</string>
     <string name="SETTINGS_CURRENCY">Currency</string>
     <string name="SETTINGS_CURRENCY_SUMMARY">Change the displayed currency at the prices:</string>
     <string-array name="SETTINGS_CURRENCY_ENTRIES">
@@ -77,18 +79,7 @@
         <item>usd</item>
     </string-array>
     <string name="SETTINGS_CURRENCY_VALUE_DEFAULT">usd</string>
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
 
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="SETTINGS_DARK_MODE">Dark Mode</string>
+    <string name="SETTINGS_DARK_MODE_SUMMARY">Enable dark mode</string>
 </resources>

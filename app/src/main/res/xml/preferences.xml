@@ -5,11 +5,20 @@
         android:icon="@drawable/ic_currency"
         android:title="@string/CURRENCY">
         <ListPreference
+
             android:defaultValue="@string/SETTINGS_CURRENCY_VALUE_DEFAULT"
             android:entries="@array/SETTINGS_CURRENCY_ENTRIES"
             android:entryValues="@array/SETTINGS_CURRENCY_VALUES"
             android:key="prefCurrency"
             android:title="@string/SETTINGS_CURRENCY"
             app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:icon="@drawable/ic_dark_mode"
+        android:title="@string/COLOR_SCHEME">
+        <SwitchPreference
+            android:key="prefScheme"
+            android:summary="@string/SETTINGS_DARK_MODE_SUMMARY"
+            android:title="@string/SETTINGS_DARK_MODE" />
     </PreferenceCategory>
 </PreferenceScreen>

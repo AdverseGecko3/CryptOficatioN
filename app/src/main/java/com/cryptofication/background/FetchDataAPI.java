@@ -1,13 +1,8 @@
 package com.cryptofication.background;
 
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import androidx.preference.PreferenceManager;
-
-import com.cryptofication.R;
-import com.cryptofication.classes.ContextApplication;
 import com.cryptofication.interfaces.CoinGeckoAPI;
 import com.cryptofication.objects.Crypto;
 
