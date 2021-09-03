@@ -11,6 +11,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreference;
 
 import com.cryptofication.R;
+import com.cryptofication.classes.Constants;
 import com.cryptofication.classes.ContextApplication;
 
 public class FragmentSettings extends PreferenceFragmentCompat {
@@ -20,9 +21,6 @@ public class FragmentSettings extends PreferenceFragmentCompat {
 
     private SharedPreferences userPrefs;
     private SharedPreferences.Editor userPrefsEditor;
-
-    public static final String PREF_CURRENCY = "prefCurrency";
-    public static final String PREF_SCHEME = "prefScheme";
 
     private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
 
@@ -34,20 +32,20 @@ public class FragmentSettings extends PreferenceFragmentCompat {
         preferenceChangeListener = (sharedPreferences, key) -> {
 
             switch (key) {
-                case PREF_CURRENCY:
+                case Constants.PREF_CURRENCY:
                     Log.d("prefSelected", lpCurrency.getTitle() + " - " + lpCurrency.getValue());
                     userPrefs = requireActivity().getSharedPreferences(ContextApplication.getAppContext().
                             getString(R.string.PREFERENCES), Context.MODE_PRIVATE);
                     userPrefsEditor = userPrefs.edit();
-                    userPrefsEditor.putString(PREF_CURRENCY, lpCurrency.getValue());
+                    userPrefsEditor.putString(Constants.PREF_CURRENCY, lpCurrency.getValue());
                     userPrefsEditor.apply();
                     break;
-                case PREF_SCHEME:
+                case Constants.PREF_SCHEME:
                     Log.d("prefSelected", spScheme.getTitle() + " - " + spScheme.isChecked());
                     userPrefs = requireActivity().getSharedPreferences(ContextApplication.getAppContext().
                             getString(R.string.PREFERENCES), Context.MODE_PRIVATE);
                     userPrefsEditor = userPrefs.edit();
-                    userPrefsEditor.putBoolean(PREF_SCHEME, spScheme.isChecked());
+                    userPrefsEditor.putBoolean(Constants.PREF_SCHEME, spScheme.isChecked());
                     if (spScheme.isChecked()) {
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                     } else {
@@ -62,15 +60,15 @@ public class FragmentSettings extends PreferenceFragmentCompat {
     }
 
     private void references() {
-        lpCurrency = findPreference(PREF_CURRENCY);
-        spScheme = findPreference(PREF_SCHEME);
+        lpCurrency = findPreference(Constants.PREF_CURRENCY);
+        spScheme = findPreference(Constants.PREF_SCHEME);
     }
 
     private void loadPreferences() {
         userPrefs = requireActivity().getSharedPreferences(ContextApplication.getAppContext().
                 getString(R.string.PREFERENCES), Context.MODE_PRIVATE);
-        String userCurrency = userPrefs.getString(PREF_CURRENCY, "usd");
-        boolean userScheme = userPrefs.getBoolean(PREF_SCHEME, true);
+        String userCurrency = userPrefs.getString(Constants.PREF_CURRENCY, "usd");
+        boolean userScheme = userPrefs.getBoolean(Constants.PREF_SCHEME, true);
 
         lpCurrency.setValue(userCurrency);
         spScheme.setChecked(userScheme);

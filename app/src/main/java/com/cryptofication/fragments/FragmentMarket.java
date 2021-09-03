@@ -1,7 +1,9 @@
 package com.cryptofication.fragments;
 
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +18,6 @@ import com.cryptofication.classes.DataClass;
 import com.cryptofication.R;
 
 import androidx.appcompat.app.ActionBar;
-import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -29,6 +30,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.cryptofication.adapters.RecyclerViewCryptoListAdapter;
 import com.cryptofication.background.FetchDataAPI;
@@ -39,9 +41,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
 
 public class FragmentMarket extends Fragment {
 
@@ -246,39 +246,20 @@ public class FragmentMarket extends Fragment {
             changeSortRecyclerView(type, order);
         }
         return true;
-
     }
 
     private void loadDataCrypto() {
         // Showing refresh animation before making api call
         srlReloadMarket.setRefreshing(true);
 
-        try {
-            String userCurrency = "";
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ContextApplication.getAppContext());
-            Log.d("SharedPreferences", sharedPreferences.getString("prefCurrency", ""));
-            userCurrency = sharedPreferences.getString("prefCurrency", "");
-            dc.cryptoList = (List<Crypto>) new FetchDataAPI().execute(userCurrency).get();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        changeSortRecyclerView(type, order);
+        Intent intent = new Intent(ContextApplication.getAppContext(),
+                FetchDataAPI.class);
+        ListResultReceiver resultReceiver = new ListResultReceiver(new Handler());
+        intent.putExtra("receiver", resultReceiver);
+        ContextApplication.getAppContext().startService(intent);
 
         // Check cryptoList size
         Log.d("MainActivity", "cryptoList size: " + dc.cryptoList.size());
-
-        // Initialize RecyclerView manager and adapter
-        rwCryptoManager = new LinearLayoutManager(getContext());
-        rwCryptoAdapter = new RecyclerViewCryptoListAdapter(getContext(), new ArrayList<>(dc.cryptoList));
-
-        // Set RecyclerView manager and adapter
-        rwCrypto.setHasFixedSize(true);
-        rwCrypto.setLayoutManager(rwCryptoManager);
-        rwCrypto.setAdapter(rwCryptoAdapter);
-
-        // Stopping swipe refresh
-        srlReloadMarket.setRefreshing(false);
     }
 
     private void changeSortRecyclerView(int type, int order) {
@@ -329,8 +310,47 @@ public class FragmentMarket extends Fragment {
         srlReloadMarket.setRefreshing(false);
     }
 
+    private void postFetchAPI() {
+        changeSortRecyclerView(type, order);
+
+        // Initialize RecyclerView manager and adapter
+        rwCryptoManager = new LinearLayoutManager(getContext());
+        rwCryptoAdapter = new RecyclerViewCryptoListAdapter(getContext(), new ArrayList<>(dc.cryptoList));
+
+        // Set RecyclerView manager and adapter
+        rwCrypto.setHasFixedSize(true);
+        rwCrypto.setLayoutManager(rwCryptoManager);
+        rwCrypto.setAdapter(rwCryptoAdapter);
+
+        // Stopping swipe refresh
+        srlReloadMarket.setRefreshing(false);
+    }
+
     private void references(View view) {
         rwCrypto = view.findViewById(R.id.rwCryptoListList);
         srlReloadMarket = view.findViewById(R.id.srlReloadMarket);
+    }
+
+    private class ListResultReceiver extends ResultReceiver {
+
+        public ListResultReceiver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        protected void onReceiveResult(int resultCode, Bundle resultData) {
+            switch (resultCode) {
+                case 1:
+                    Toast.makeText(ContextApplication.getAppContext(), "Error",
+                            Toast.LENGTH_SHORT).show();
+                    break;
+                case 0:
+                    dc.cryptoList = resultData.getParcelableArrayList("cryptoList");
+                    Log.d("BackgroundCryptoS", String.valueOf(dc.cryptoList.size()));
+                    postFetchAPI();
+                    break;
+            }
+            super.onReceiveResult(resultCode, resultData);
+        }
     }
 }

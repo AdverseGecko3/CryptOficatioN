@@ -1,6 +1,9 @@
 package com.cryptofication.objects;
 
-public class Crypto {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Crypto implements Parcelable {
 
     private String id;
     private String name;
@@ -16,7 +19,8 @@ public class Crypto {
 
     }
 
-    public Crypto(String id, String name, String symbol, String image, double current_price, int market_cap_rank, float high_24h, float low_24h, float price_change_percentage_24h) {
+    public Crypto(String id, String name, String symbol, String image, double current_price,
+                  int market_cap_rank, float high_24h, float low_24h, float price_change_percentage_24h) {
         this.id = id;
         this.name = name;
         this.symbol = symbol;
@@ -116,4 +120,41 @@ public class Crypto {
                 .append("\n");
         return sb.toString();
     }
+
+    public Crypto(Parcel in) {
+        String[] data = new String[9];
+        in.readStringArray(data);
+
+        this.id = data[0];
+        this.name = data[1];
+        this.symbol = data[2];
+        this.image = data[3];
+        this.current_price = Double.parseDouble(data[4]);
+        this.market_cap_rank = Integer.parseInt(data[5]);
+        this.high_24h = Float.parseFloat(data[6]);
+        this.low_24h = Float.parseFloat(data[7]);
+        this.price_change_percentage_24h = Float.parseFloat(data[8]);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeStringArray(new String[]{this.id, this.name, this.symbol, this.image, String.valueOf(this.current_price),
+                String.valueOf(this.market_cap_rank), String.valueOf(this.high_24h), String.valueOf(this.low_24h),
+                String.valueOf(this.price_change_percentage_24h)});
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Crypto createFromParcel(Parcel in) {
+            return new Crypto(in);
+        }
+
+        public Crypto[] newArray(int size) {
+            return new Crypto[size];
+        }
+    };
 }
