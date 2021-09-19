@@ -199,7 +199,7 @@ public class RecyclerViewCryptoListAdapter extends RecyclerView.Adapter<Recycler
             if (priceChange.endsWith(".")) {
                 priceChange = currentPrice.substring(0, currentPrice.length() - 1);
             }
-            crypto.setPriceChangePercentage24h(Float.parseFloat(priceChange));
+            crypto.setPriceChangePercentage24h(Double.parseDouble(priceChange));
             tvCryptoPriceChange.setText(priceChange + "%");
             if (crypto.getPriceChangePercentage24h() >= 0) {
                 tvCryptoPriceChange.setTextColor(ContextCompat.getColor(context, R.color.green_high));

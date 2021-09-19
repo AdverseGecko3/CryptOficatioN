@@ -21,7 +21,9 @@ import com.cryptofication.objects.Crypto;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,18 +44,25 @@ public class FetchDataAPI extends IntentService {
         }
         Bundle bundleToReceiver = new Bundle();
 
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
+                .build();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.coingecko.com/api/v3/")
+                .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         CoinGeckoAPI coinGeckoAPI = retrofit.create(CoinGeckoAPI.class);
-        String userCurrency = "";
+        String userCurrency, userItemsPage;
         SharedPreferences sharedPreferences = ContextApplication.getAppContext().getSharedPreferences(ContextApplication.getAppContext().
                 getString(R.string.PREFERENCES), Context.MODE_PRIVATE);
         Log.d("SharedPreferences", sharedPreferences.getString("prefCurrency", ""));
-        userCurrency = sharedPreferences.getString(Constants.PREF_CURRENCY, "");
+        userCurrency = sharedPreferences.getString(Constants.PREF_CURRENCY, getString(R.string.SETTINGS_CURRENCY_VALUE_DEFAULT));
+        userItemsPage = sharedPreferences.getString(Constants.PREF_ITEMS_PAGE, getString(R.string.SETTINGS_ITEMS_PAGE_VALUE_DEFAULT));
         Log.d("FetchDataAPI - Objects", String.valueOf(userCurrency));
-        Call<List<Crypto>> call = coinGeckoAPI.getPosts(String.valueOf(userCurrency), "market_cap_desc", "250", "1", "false");
+        Call<List<Crypto>> call = coinGeckoAPI.getPosts(String.valueOf(userCurrency), "market_cap_desc", userItemsPage, "1", "false");
         Log.d("BackgroundService", "Call received: " + call);
 
         List<Crypto> cryptoList = new ArrayList<>();
@@ -74,6 +83,8 @@ public class FetchDataAPI extends IntentService {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            Log.d("BackgroundService", "IOException");
+            receiver.send(1, Bundle.EMPTY);
         }
     }
 }

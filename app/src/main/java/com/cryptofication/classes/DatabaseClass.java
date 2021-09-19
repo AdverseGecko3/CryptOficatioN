@@ -1,7 +1,5 @@
 package com.cryptofication.classes;
 
-import android.annotation.SuppressLint;
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,14 +7,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
-import java.util.ArrayList;
-
 public class DatabaseClass extends SQLiteOpenHelper {
 
-    private String SQLiteCreateTableFavorites = "CREATE TABLE Favorites (ID_FAVORITE NUMBER PRIMARY KEY, ID_CRYPTO TEXT)"; //Create table Favorites
-    private String SQLiteCreateTableConversions = "CREATE TABLE Conversions (ID_CONVERSION NUMBER PRIMARY KEY, ID_CRYPTO_1 TEXT, ID_CRYPTO_2 TEXT)"; //Create table Conversions
-    private String SQLiteDropTableUsers = "DROP TABLE IF EXISTS 'Favorites'";
-    private String SQLiteDropTableRates = "DROP TABLE IF EXISTS 'Conversions'";
+    private final String SQLiteCreateTableFavorites = "CREATE TABLE Favorites (SYMBOL TEXT PRIMARY KEY, POSITION TEXT)";
+    private final String SQLiteCreateTableConversions = "CREATE TABLE Conversions (ID_CONVERSION NUMBER PRIMARY KEY, ID_CRYPTO_1 TEXT, ID_CRYPTO_2 TEXT)";
+    private final String SQLiteDropTableFavorites = "DROP TABLE IF EXISTS 'Favorites'";
+    private final String SQLiteDropTableConversions = "DROP TABLE IF EXISTS 'Conversions'";
 
     public DatabaseClass(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -30,8 +26,8 @@ public class DatabaseClass extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(SQLiteDropTableUsers);
-        db.execSQL(SQLiteDropTableRates);
+        db.execSQL(SQLiteDropTableFavorites);
+        db.execSQL(SQLiteDropTableConversions);
         onCreate(db);
     }
 

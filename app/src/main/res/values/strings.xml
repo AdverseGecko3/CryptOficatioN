@@ -32,6 +32,7 @@
     <string name="CURRENCY_DOLLAR">$</string>
     <string name="CURRENCY">Currency</string>
     <string name="COLOR_SCHEME">Color Scheme</string>
+    <string name="MARKET">Market</string>
 
     <!--STRINGS DOTS-->
     <string name="NAME_DOTS">Name:</string>
@@ -68,6 +69,7 @@
 
     <!--SETTINGS-->
     <string name="PREFERENCES">userPrefs</string>
+
     <string name="SETTINGS_CURRENCY">Currency</string>
     <string name="SETTINGS_CURRENCY_SUMMARY">Change the displayed currency at the prices:</string>
     <string-array name="SETTINGS_CURRENCY_ENTRIES">
@@ -79,6 +81,44 @@
         <item>usd</item>
     </string-array>
     <string name="SETTINGS_CURRENCY_VALUE_DEFAULT">usd</string>
+
+    <string name="SETTINGS_FILTER_OPTION">Filter option</string>
+    <string-array name="SETTINGS_FILTER_OPTION_ENTRIES">
+        <item>Name</item>
+        <item>Symbol</item>
+        <item>Price</item>
+    </string-array>
+    <string-array name="SETTINGS_FILTER_OPTION_VALUES">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string name="SETTINGS_FILTER_OPTION_VALUE_DEFAULT">0</string>
+
+    <string name="SETTINGS_FILTER_ORDER">Filter order</string>
+    <string-array name="SETTINGS_FILTER_ORDER_ENTRIES">
+        <item>Ascending</item>
+        <item>Descending</item>
+    </string-array>
+    <string-array name="SETTINGS_FILTER_ORDER_VALUES">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+    <string name="SETTINGS_FILTER_ORDER_VALUE_DEFAULT">0</string>
+
+    <string name="SETTINGS_ITEMS_PAGE">Items to show</string>
+    <string-array name="SETTINGS_ITEMS_PAGE_ENTRIES_VALUES">
+        <item>50</item>
+        <item>75</item>
+        <item>100</item>
+        <item>125</item>
+        <item>150</item>
+        <item>175</item>
+        <item>200</item>
+        <item>225</item>
+        <item>250</item>
+    </string-array>
+    <string name="SETTINGS_ITEMS_PAGE_VALUE_DEFAULT">100</string>
 
     <string name="SETTINGS_DARK_MODE">Dark Mode</string>
     <string name="SETTINGS_DARK_MODE_SUMMARY">Enable dark mode</string>

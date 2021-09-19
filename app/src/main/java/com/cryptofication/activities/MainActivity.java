@@ -3,7 +3,9 @@ package com.cryptofication.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.cryptofication.R;
 import com.cryptofication.classes.Constants;
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.anim_fade_in_slow, R.anim.anim_fade_out_slow);
         setContentView(R.layout.activity_main);
         db = new DatabaseClass(this,"Gecko's Database", null, 1);
+        Log.d("firstRunMainCreate", "App first run");
         BottomNavigationView bot_nav = findViewById(R.id.nav_bottom);
         bot_nav.setSelectedItemId(Constants.MARKETS);
         DataClass.newItem = bot_nav.getSelectedItemId();

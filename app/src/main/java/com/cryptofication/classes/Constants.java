@@ -9,4 +9,7 @@ public class Constants {
     public static final int SETTINGS = R.id.nav_settings;
     public static final String PREF_CURRENCY = "prefCurrency";
     public static final String PREF_SCHEME = "prefScheme";
+    public static final String PREF_FILTER_OPTION = "prefDefaultFilterOption";
+    public static final String PREF_FILTER_ORDER = "prefDefaultFilterOrder";
+    public static final String PREF_ITEMS_PAGE = "prefDefaultItemsPage";
 }

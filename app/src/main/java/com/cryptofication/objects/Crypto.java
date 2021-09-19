@@ -11,16 +11,16 @@ public class Crypto implements Parcelable {
     private String image;
     private double current_price;
     private int market_cap_rank;
-    private float high_24h;
-    private float low_24h;
-    private float price_change_percentage_24h;
+    private double high_24h;
+    private double low_24h;
+    private double price_change_percentage_24h;
 
     public Crypto() {
 
     }
 
     public Crypto(String id, String name, String symbol, String image, double current_price,
-                  int market_cap_rank, float high_24h, float low_24h, float price_change_percentage_24h) {
+                  int market_cap_rank, double high_24h, double low_24h, double price_change_percentage_24h) {
         this.id = id;
         this.name = name;
         this.symbol = symbol;
@@ -80,27 +80,27 @@ public class Crypto implements Parcelable {
         this.market_cap_rank = market_cap_rank;
     }
 
-    public float getHigh24h() {
+    public double getHigh24h() {
         return high_24h;
     }
 
-    public void setHigh24h(float high_24h) {
+    public void setHigh24h(double high_24h) {
         this.high_24h = high_24h;
     }
 
-    public float getLow24h() {
+    public double getLow24h() {
         return low_24h;
     }
 
-    public void setLow24h(float low_24h) {
+    public void setLow24h(double low_24h) {
         this.low_24h = low_24h;
     }
 
-    public float getPriceChangePercentage24h() {
+    public double getPriceChangePercentage24h() {
         return price_change_percentage_24h;
     }
 
-    public void setPriceChangePercentage24h(float price_change_percentage_24h) {
+    public void setPriceChangePercentage24h(double price_change_percentage_24h) {
         this.price_change_percentage_24h = price_change_percentage_24h;
     }
 
