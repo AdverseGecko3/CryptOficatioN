@@ -46,4 +46,14 @@
             android:summary="@string/SETTINGS_DARK_MODE_SUMMARY"
             android:title="@string/SETTINGS_DARK_MODE" />
     </PreferenceCategory>
+    <PreferenceCategory
+        android:icon="@drawable/ic_info"
+        android:title="@string/ABOUT">
+        <Preference
+            android:key="prefAbout"
+            android:title="@string/SETTINGS_ABOUT" />
+        <Preference
+            android:key="prefCredits"
+            android:title="@string/SETTINGS_CREDITS" />
+    </PreferenceCategory>
 </PreferenceScreen>

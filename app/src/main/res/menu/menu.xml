@@ -23,7 +23,6 @@
                     android:title="@string/FILTER_TYPE" />
                 <item
                     android:id="@+id/mnFilterOptionName"
-                    android:checked="true"
                     android:title="@string/FILTER_NAME" />
                 <item
                     android:id="@+id/mnFilterOptionSymbol"
@@ -31,6 +30,9 @@
                 <item
                     android:id="@+id/mnFilterOptionPrice"
                     android:title="@string/FILTER_PRICE" />
+                <item
+                    android:id="@+id/mnFilterOptionPercentage"
+                    android:title="@string/FILTER_PERCENTAGE" />
             </group>
             <group
                 android:id="@+id/mnGroupFilterOrder"
@@ -42,7 +44,6 @@
                     android:title="@string/FILTER_ORDER" />
                 <item
                     android:id="@+id/mnFilterOrderAscending"
-                    android:checked="true"
                     android:title="@string/FILTER_ASCENDING" />
                 <item
                     android:id="@+id/mnFilterOrderDescending"

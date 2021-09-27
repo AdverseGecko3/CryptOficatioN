@@ -2,17 +2,17 @@ package com.cryptofication.classes;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
 public class DatabaseClass extends SQLiteOpenHelper {
 
-    private final String SQLiteCreateTableFavorites = "CREATE TABLE Favorites (SYMBOL TEXT PRIMARY KEY, POSITION TEXT)";
-    private final String SQLiteCreateTableConversions = "CREATE TABLE Conversions (ID_CONVERSION NUMBER PRIMARY KEY, ID_CRYPTO_1 TEXT, ID_CRYPTO_2 TEXT)";
+    private final String SQLiteCreateTableFavorites = "CREATE TABLE Favorites (SYMBOL TEXT PRIMARY KEY, DATE_ADDED TEXT)";
     private final String SQLiteDropTableFavorites = "DROP TABLE IF EXISTS 'Favorites'";
-    private final String SQLiteDropTableConversions = "DROP TABLE IF EXISTS 'Conversions'";
 
     public DatabaseClass(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -21,29 +21,80 @@ public class DatabaseClass extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQLiteCreateTableFavorites);
-        db.execSQL(SQLiteCreateTableConversions);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(SQLiteDropTableFavorites);
-        db.execSQL(SQLiteDropTableConversions);
         onCreate(db);
     }
 
-    public int searchInTableFavorites(String id_favorite) {
-        SQLiteDatabase db_search = this.getReadableDatabase();
-        String[] fields = new String[]{"ID_FAVORITE"};
-        String[] args = new String[]{id_favorite};
-        Cursor res = db_search.query("Favorites", fields, //Search in database
-                "Username = ?", args, null, null, null);
-        if (res.getCount() >= 1) {
-            res.moveToNext();
-            db_search.close();
-            return 0;
-        } else {
-            db_search.close();
+    public int insertToFavorites(String symbol, String date) {
+        SQLiteDatabase writable, readable;
+        writable = this.getWritableDatabase();
+        readable = this.getReadableDatabase();
+        // Insert both entered fields into the database
+        String query = "INSERT INTO Favorites VALUES ('" + symbol + "' , '" + date + "')";
+        boolean unique = true;
+
+        try {
+            writable.execSQL(query);
+        } catch (Exception e) {
+            e.getStackTrace();
+            unique = false;
+        }
+
+        String[] fields = new String[]{"symbol"};
+        String[] args = new String[]{symbol};
+
+        Cursor cursor = readable.query("Favorites", fields, //Search in database
+                "symbol = ?", args, null, null, null);
+
+        int i = cursor.getCount();
+        writable.close();
+        readable.close();
+        cursor.close();
+        Log.d("insertFavorites", "Cryptos with that symbol in favorites: " + i);
+        if (!unique) {
+            return -1;
+        } else if (i == 1) {
             return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    public int deleteFromFavorites(String symbol) {
+        SQLiteDatabase writable;
+        writable = this.getWritableDatabase();
+        String[] val = new String[]{symbol};
+
+        int sol = writable.delete("Favorites", "symbol = ?", val); //Delete from table
+        writable.close();
+        return sol;
+    }
+
+    public float searchInFavorites(String username) {
+        SQLiteDatabase readable = this.getReadableDatabase();
+        String selectQuery = "SELECT * FROM Rates WHERE username = '" + username + "'";
+        try {
+            Cursor cursor = readable.rawQuery(selectQuery, null);
+            if (cursor.getCount() >= 1) {
+                Log.d("ratingQuery", "User already voted");
+                cursor.moveToNext();
+                float sol = cursor.getFloat(1);
+                readable.close();
+                cursor.close();
+                return sol;
+            } else {
+                Log.d("ratingQuery", "User did not vote");
+                readable.close();
+                cursor.close();
+                return -5;
+            }
+        } catch (SQLException ex) {
+            Log.d("ratingQuery", "Exception");
+            return -5;
         }
     }
 }

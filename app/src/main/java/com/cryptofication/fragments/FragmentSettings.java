@@ -1,11 +1,23 @@
 package com.cryptofication.fragments;
 
+import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.preference.ListPreference;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreference;
 
@@ -17,6 +29,7 @@ public class FragmentSettings extends PreferenceFragmentCompat {
 
     private ListPreference lpCurrency, lpFilterOption, lpFilterOrder, lpItemsPage;
     private SwitchPreference spScheme;
+    private Preference pAbout, pCredits;
 
     private SharedPreferences userPrefs;
     private SharedPreferences.Editor userPrefsEditor;
@@ -74,6 +87,88 @@ public class FragmentSettings extends PreferenceFragmentCompat {
                     break;
             }
         };
+
+        pAbout.setOnPreferenceClickListener(preference -> {
+            // Create dialog to confirm the dismiss
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),
+                    R.style.CustomAlertDialog);
+
+            LayoutInflater inflater = getActivity().getLayoutInflater();
+            @SuppressLint("InflateParams") View dialogView = inflater.inflate(R.layout.dialog_about, null);
+            builder.setView(dialogView);
+            builder.setNeutralButton(getString(R.string.CLOSE), (dialogInterface, i) -> dialogInterface.dismiss())
+                    .create();
+            final AlertDialog dialog = builder.show();
+
+            // Change the button color and weight
+            Button btnDismiss = dialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+            btnDismiss.setTextColor(ResourcesCompat.getColor(getResources(), R.color.purple_toolbar, null));
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnDismiss.getLayoutParams();
+            layoutParams.weight = 10;
+            btnDismiss.setLayoutParams(layoutParams);
+
+            ImageView ivLinkedIn = dialog.findViewById(R.id.ivDialogAboutLinkedIn);
+            ImageView ivInstagram = dialog.findViewById(R.id.ivDialogAboutInstagram);
+            ImageView ivTwitter = dialog.findViewById(R.id.ivDialogAboutTwitter);
+
+            if (ivLinkedIn != null) {
+                ivLinkedIn.setOnClickListener(view -> {
+
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("linkedin://in/eric-barrero")));
+                    } catch (Exception e) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.linkedin.com/in/eric-barrero")));
+                    }
+                });
+            }
+            if (ivInstagram != null) {
+                ivInstagram.setOnClickListener(view -> {
+                    Intent intentInstagram = new Intent(Intent.ACTION_VIEW, Uri.parse("http://instagram.com/_u/adversegecko3"));
+                    intentInstagram.setPackage("com.instagram.android");
+                    try {
+                        startActivity(intentInstagram);
+                    } catch (ActivityNotFoundException e) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://instagram.com/adversegecko3")));
+                    }
+                });
+            }
+            if (ivTwitter != null) {
+                ivTwitter.setOnClickListener(view -> {
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?screen_name=adversegecko3")));
+                    } catch (Exception e) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/#!/adversegecko3")));
+                    }
+                });
+            }
+
+            // Show the dialog
+            dialog.show();
+            return false;
+        });
+        pCredits.setOnPreferenceClickListener(preference -> {
+            // Create dialog to confirm the dismiss
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),
+                    R.style.CustomAlertDialog);
+
+            LayoutInflater inflater = getActivity().getLayoutInflater();
+            @SuppressLint("InflateParams") View dialogView = inflater.inflate(R.layout.dialog_credits, null);
+            builder.setView(dialogView);
+            builder.setNeutralButton(getString(R.string.CLOSE), (dialogInterface, i) -> dialogInterface.dismiss())
+                    .create();
+            final AlertDialog dialog = builder.show();
+
+            // Change the button color and weight
+            Button btnDismiss = dialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+            btnDismiss.setTextColor(ResourcesCompat.getColor(getResources(), R.color.purple_toolbar, null));
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnDismiss.getLayoutParams();
+            layoutParams.weight = 10;
+            btnDismiss.setLayoutParams(layoutParams);
+
+            // Show the dialog
+            dialog.show();
+            return false;
+        });
     }
 
     private void references() {
@@ -82,6 +177,8 @@ public class FragmentSettings extends PreferenceFragmentCompat {
         lpFilterOption = findPreference(Constants.PREF_FILTER_OPTION);
         lpFilterOrder = findPreference(Constants.PREF_FILTER_ORDER);
         lpItemsPage = findPreference(Constants.PREF_ITEMS_PAGE);
+        pAbout = findPreference(Constants.PREF_ABOUT);
+        pCredits = findPreference(Constants.PREF_CREDITS);
     }
 
     private void loadPreferences() {

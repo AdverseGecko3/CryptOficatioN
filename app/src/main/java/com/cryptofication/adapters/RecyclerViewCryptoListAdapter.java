@@ -45,10 +45,6 @@ public class RecyclerViewCryptoListAdapter extends RecyclerView.Adapter<Recycler
     private TextView tvDialogCryptoDetailCurrentPrice;
     private Button btnDialogCryptoDetailClose;
 
-    private TextView tvDialogCryptoOptionsName;
-    private TextView tvDialogCryptoOptionsAddFavorite;
-    private Button btnDialogCryptoOptionsClose;
-
     public RecyclerViewCryptoListAdapter(Context context, ArrayList<Crypto> cryptoList) {
         this.context = context;
         this.cryptoList = cryptoList;
@@ -90,7 +86,8 @@ public class RecyclerViewCryptoListAdapter extends RecyclerView.Adapter<Recycler
             tvDialogCryptoDetailName.setText(selectedPost.getName());
             tvDialogCryptoDetailSymbol.setText(selectedPost.getSymbol());
             tvDialogCryptoDetailMarketCapRank.setText(String.valueOf(selectedPost.getMarketCapRank()));
-            tvDialogCryptoDetailPriceChangePercentage24h.setText(String.format("%.2f", selectedPost.getPriceChangePercentage24h()).replaceAll("0+$", "") + "%");
+            tvDialogCryptoDetailPriceChangePercentage24h.setText(String.format("%.2f",
+                    selectedPost.getPriceChangePercentage24h()).replaceAll("0+$", "") + "%");
             if (selectedPost.getPriceChangePercentage24h() >= 0) {
                 tvDialogCryptoDetailPriceChangePercentage24h.setTextColor(ContextCompat.getColor(context, R.color.green_high));
             } else {
@@ -106,7 +103,8 @@ public class RecyclerViewCryptoListAdapter extends RecyclerView.Adapter<Recycler
                 low24h = low24h.substring(0, low24h.length() - 1);
             }
             tvDialogCryptoDetailLow24h.setText(low24h + userCurrency);
-            @SuppressLint("DefaultLocale") String currentPrice = String.format("%.10f", selectedPost.getCurrentPrice()).replaceAll("0+$", "");
+            @SuppressLint("DefaultLocale") String currentPrice = String.format("%.10f",
+                    selectedPost.getCurrentPrice()).replaceAll("0+$", "");
             if (currentPrice.endsWith(".")) {
                 currentPrice = currentPrice.substring(0, currentPrice.length() - 1);
             }
@@ -116,15 +114,6 @@ public class RecyclerViewCryptoListAdapter extends RecyclerView.Adapter<Recycler
             btnDialogCryptoDetailClose.setOnClickListener(view1 -> alertDialog.dismiss());
             alertDialog.show();
         });
-
-        holder.parentLayout.setOnLongClickListener(view -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext(), R.style.CustomAlertDialog);
-            @SuppressLint("InflateParams") View v = LayoutInflater.from(context).inflate(R.layout.crypto_options_dialog, null);
-            referencesOptionsDialog(v);
-            tvDialogCryptoOptionsName.setText(selectedPost.getName());
-            return false;
-        });
-
     }
 
     @Override
@@ -157,10 +146,13 @@ public class RecyclerViewCryptoListAdapter extends RecyclerView.Adapter<Recycler
             return results;
         }
 
+
         @Override
+        @SuppressLint("NotifyDataSetChanged")
+        @SuppressWarnings("unchecked")
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
             cryptoList.clear();
-            cryptoList.addAll((List) filterResults.values);
+            cryptoList.addAll((ArrayList<Crypto>) filterResults.values);
             notifyDataSetChanged();
         }
     };
@@ -189,15 +181,17 @@ public class RecyclerViewCryptoListAdapter extends RecyclerView.Adapter<Recycler
 
             tvCryptoSymbol.setText(crypto.getSymbol());
             tvCryptoName.setText(crypto.getName());
-            @SuppressLint("DefaultLocale") String currentPrice = String.format("%.10f", crypto.getCurrentPrice()).replaceAll("0+$", "");
+            @SuppressLint("DefaultLocale") String currentPrice = String.format("%.10f",
+                    crypto.getCurrentPrice()).replaceAll("0+$", "");
             if (currentPrice.endsWith(".")) {
                 currentPrice = currentPrice.substring(0, currentPrice.length() - 1);
             }
             crypto.setCurrentPrice(Double.parseDouble(currentPrice));
             tvCryptoPrice.setText(currentPrice + userCurrency);
-            @SuppressLint("DefaultLocale") String priceChange = String.format("%.2f", crypto.getPriceChangePercentage24h()).replaceAll("0+$", "");
+            @SuppressLint("DefaultLocale") String priceChange = String.format("%.2f",
+                    crypto.getPriceChangePercentage24h()).replaceAll("0+$", "");
             if (priceChange.endsWith(".")) {
-                priceChange = currentPrice.substring(0, currentPrice.length() - 1);
+                priceChange = priceChange.substring(0, priceChange.length() - 1);
             }
             crypto.setPriceChangePercentage24h(Double.parseDouble(priceChange));
             tvCryptoPriceChange.setText(priceChange + "%");
@@ -218,11 +212,5 @@ public class RecyclerViewCryptoListAdapter extends RecyclerView.Adapter<Recycler
         tvDialogCryptoDetailLow24h = v.findViewById(R.id.tvDialogCryptoDetailLow24hText);
         tvDialogCryptoDetailCurrentPrice = v.findViewById(R.id.tvDialogCryptoDetailCurrentPriceText);
         btnDialogCryptoDetailClose = v.findViewById(R.id.btnDialogCryptoDetailClose);
-    }
-
-    private void referencesOptionsDialog(View v) {
-        tvDialogCryptoOptionsName = v.findViewById(R.id.tvDialogCryptoOptionsName);
-        tvDialogCryptoOptionsAddFavorite = v.findViewById(R.id.tvDialogCryptoOptionsAddFavorite);
-        btnDialogCryptoOptionsClose = v.findViewById(R.id.btnDialogCryptoOptionsClose);
     }
 }

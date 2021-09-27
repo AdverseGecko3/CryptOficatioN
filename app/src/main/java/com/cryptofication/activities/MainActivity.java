@@ -1,62 +1,77 @@
 package com.cryptofication.activities;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
-import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.view.Gravity;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cryptofication.R;
 import com.cryptofication.classes.Constants;
 import com.cryptofication.classes.DataClass;
-import com.cryptofication.classes.DatabaseClass;
 import com.cryptofication.fragments.FragmentMarket;
-import com.cryptofication.fragments.FragmentTrade;
 import com.cryptofication.fragments.FragmentSettings;
 import com.cryptofication.fragments.FragmentFavorites;
+import com.cryptofication.interfaces.IOnBackPressed;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static DatabaseClass db;
+    private int fragmentShow;
+
+    private final FragmentMarket fragmentMarket = new FragmentMarket();
+    private final FragmentFavorites fragmentFavorites = new FragmentFavorites();
+    private final FragmentSettings fragmentSettings = new FragmentSettings();
+
+    private boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.anim_fade_in_slow, R.anim.anim_fade_out_slow);
         setContentView(R.layout.activity_main);
-        db = new DatabaseClass(this,"Gecko's Database", null, 1);
+        references();
         Log.d("firstRunMainCreate", "App first run");
-        BottomNavigationView bot_nav = findViewById(R.id.nav_bottom);
-        bot_nav.setSelectedItemId(Constants.MARKETS);
-        DataClass.newItem = bot_nav.getSelectedItemId();
-        bot_nav.setOnNavigationItemSelectedListener(navListener);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentShow,
-                new FragmentMarket()).commit();
+        BottomNavigationView bottomNavigation = findViewById(R.id.navBottom);
+        bottomNavigation.setSelectedItemId(Constants.MARKETS);
+        DataClass.newItem = bottomNavigation.getSelectedItemId();
+        bottomNavigation.setOnItemSelectedListener(navListener);
+        getSupportFragmentManager().beginTransaction()
+                .replace(fragmentShow, fragmentMarket)
+                .disallowAddToBackStack()
+                .commit();
     }
 
-    private final BottomNavigationView.OnNavigationItemSelectedListener navListener =
+    private void references() {
+        fragmentShow = R.id.fragmentShow;
+    }
+
+    private final NavigationBarView.OnItemSelectedListener navListener =
             menuItem -> {
                 Fragment selectedFragment = null;
                 switch (menuItem.getItemId()) {
                     case Constants.MARKETS:
-                        selectedFragment = new FragmentMarket();
+                        selectedFragment = fragmentMarket;
                         DataClass.oldItem = DataClass.newItem;
                         DataClass.newItem = Constants.MARKETS;
                         break;
-                    case Constants.CONVERSION:
-                        selectedFragment = new FragmentTrade();
-                        DataClass.oldItem = DataClass.newItem;
-                        DataClass.newItem = Constants.CONVERSION;
-                        break;
                     case Constants.FAVORITES:
-                        selectedFragment = new FragmentFavorites();
+                        selectedFragment = fragmentFavorites;
                         DataClass.oldItem = DataClass.newItem;
                         DataClass.newItem = Constants.FAVORITES;
                         break;
                     case Constants.SETTINGS:
-                        selectedFragment = new FragmentSettings();
+                        selectedFragment = fragmentSettings;
                         DataClass.oldItem = DataClass.newItem;
                         DataClass.newItem = Constants.SETTINGS;
                         break;
@@ -72,33 +87,18 @@ public class MainActivity extends AppCompatActivity {
             case Constants.MARKETS:
                 switch (DataClass.newItem) {
                     case Constants.MARKETS:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentShow,
-                                selectedFragment).commit();
-                        break;
-                    case Constants.CONVERSION:
-                    case Constants.FAVORITES:
-                    case Constants.SETTINGS:
-                        getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left).replace(R.id.fragmentShow,
-                                selectedFragment).commit();
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            case Constants.CONVERSION:
-                switch (DataClass.newItem) {
-                    case Constants.MARKETS:
-                        getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right).replace(R.id.fragmentShow,
-                                selectedFragment).commit();
-                        break;
-                    case Constants.CONVERSION:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentShow,
-                                selectedFragment).commit();
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(fragmentShow, selectedFragment)
+                                .disallowAddToBackStack()
+                                .commit();
                         break;
                     case Constants.FAVORITES:
                     case Constants.SETTINGS:
-                        getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left).replace(R.id.fragmentShow,
-                                selectedFragment).commit();
+                        getSupportFragmentManager().beginTransaction()
+                                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left)
+                                .replace(fragmentShow, selectedFragment)
+                                .disallowAddToBackStack()
+                                .commit();
                         break;
                     default:
                         break;
@@ -107,17 +107,24 @@ public class MainActivity extends AppCompatActivity {
             case Constants.FAVORITES:
                 switch (DataClass.newItem) {
                     case Constants.MARKETS:
-                    case Constants.CONVERSION:
-                        getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right).replace(R.id.fragmentShow,
-                                selectedFragment).commit();
+                        getSupportFragmentManager().beginTransaction()
+                                .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right)
+                                .replace(fragmentShow, selectedFragment)
+                                .disallowAddToBackStack()
+                                .commit();
                         break;
                     case Constants.FAVORITES:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentShow,
-                                selectedFragment).commit();
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(fragmentShow, selectedFragment)
+                                .disallowAddToBackStack()
+                                .commit();
                         break;
                     case Constants.SETTINGS:
-                        getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left).replace(R.id.fragmentShow,
-                                selectedFragment).commit();
+                        getSupportFragmentManager().beginTransaction()
+                                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left)
+                                .replace(fragmentShow, selectedFragment)
+                                .disallowAddToBackStack()
+                                .commit();
                         break;
                     default:
                         break;
@@ -126,14 +133,18 @@ public class MainActivity extends AppCompatActivity {
             case Constants.SETTINGS:
                 switch (DataClass.newItem) {
                     case Constants.MARKETS:
-                    case Constants.CONVERSION:
                     case Constants.FAVORITES:
-                        getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right).replace(R.id.fragmentShow,
-                                selectedFragment).commit();
+                        getSupportFragmentManager().beginTransaction()
+                                .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right)
+                                .replace(fragmentShow, selectedFragment)
+                                .disallowAddToBackStack()
+                                .commit();
                         break;
                     case Constants.SETTINGS:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentShow,
-                                selectedFragment).commit();
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(fragmentShow, selectedFragment)
+                                .disallowAddToBackStack()
+                                .commit();
                         break;
                     default:
                         break;
@@ -142,5 +153,40 @@ public class MainActivity extends AppCompatActivity {
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Create dialog to confirm the dismiss
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialog);
+
+        TextView titleExit = new TextView(this);
+        titleExit.setText(getString(R.string.EXIT));
+        titleExit.setTextColor(ResourcesCompat.getColor(getResources(), R.color.white, null));
+        titleExit.setGravity(Gravity.CENTER);
+        titleExit.setTextSize(25);
+        titleExit.setPadding(titleExit.getLineHeight() / 2, titleExit.getLineHeight() / 2,
+                titleExit.getLineHeight() / 2, titleExit.getLineHeight() / 2);
+
+        builder.setCustomTitle(titleExit)
+                .setMessage(getString(R.string.CONFIRMATION_EXIT))
+                .setNegativeButton(getString(R.string.NO), (dialog, which) -> dialog.cancel())
+                .setPositiveButton(getString(R.string.YES), (dialog, which) -> super.onBackPressed())
+                .create();
+        final AlertDialog dialog = builder.show();
+
+        // Change the buttons color and weight
+        Button btnYes = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        Button btnNo = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+        btnYes.setTextColor(ResourcesCompat.getColor(getResources(), R.color.purple_toolbar, null));
+        btnNo.setTextColor(ResourcesCompat.getColor(getResources(), R.color.purple_toolbar, null));
+
+        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnYes.getLayoutParams();
+        layoutParams.weight = 10;
+        btnYes.setLayoutParams(layoutParams);
+        btnNo.setLayoutParams(layoutParams);
+
+        // Show the dialog
+        dialog.show();
     }
 }

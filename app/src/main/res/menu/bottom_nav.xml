@@ -5,10 +5,6 @@
         android:icon="@drawable/ic_trending_up"
         android:title="@string/MARKETS"/>
     <item
-        android:id="@+id/nav_conversion"
-        android:icon="@drawable/ic_compare_arrows"
-        android:title="@string/CONVERSION"/>
-    <item
         android:id="@+id/nav_favorites"
         android:icon="@drawable/ic_star"
         android:title="@string/FAVORITES"/>
