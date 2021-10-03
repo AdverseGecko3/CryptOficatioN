@@ -4,20 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/super_dark_purple"
+    android:background="@color/purple_background"
     tools:context=".activities.SplashActivity">
 
     <ImageView
         android:id="@+id/ivSplashLogo"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:contentDescription="@string/app_name"
         android:padding="50dp"
         android:src="@drawable/cryptofication_short_white"
         app:layout_constraintBottom_toTopOf="@+id/tvSplashPoweredBy"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/app_name" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvSplashPoweredBy"
@@ -26,7 +26,7 @@
         android:gravity="center|center_vertical"
         android:padding="10dp"
         android:text="@string/POWERED_BY"
-        android:textColor="@color/gray"
+        android:textColor="@color/text"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -162,6 +163,7 @@ public class RecyclerViewCryptoListAdapter extends RecyclerView.Adapter<Recycler
         TextView tvCryptoSymbol;
         TextView tvCryptoName;
         TextView tvCryptoPrice;
+        ImageView ivCryptoPriceChange;
         TextView tvCryptoPriceChange;
         LinearLayout parentLayout;
 
@@ -171,7 +173,8 @@ public class RecyclerViewCryptoListAdapter extends RecyclerView.Adapter<Recycler
             tvCryptoSymbol = itemView.findViewById(R.id.tvAdapterCryptoSymbol);
             tvCryptoName = itemView.findViewById(R.id.tvAdapterCryptoName);
             tvCryptoPrice = itemView.findViewById(R.id.tvAdapterCryptoPrice);
-            tvCryptoPriceChange = itemView.findViewById(R.id.tvAdapterCryptoPriceChange);
+            ivCryptoPriceChange = itemView.findViewById(R.id.ivAdapterCryptoIconPriceChange);
+            tvCryptoPriceChange = itemView.findViewById(R.id.tvAdapterCryptoTextPriceChange);
             parentLayout = itemView.findViewById(R.id.parentLayout);
         }
 
@@ -196,8 +199,12 @@ public class RecyclerViewCryptoListAdapter extends RecyclerView.Adapter<Recycler
             crypto.setPriceChangePercentage24h(Double.parseDouble(priceChange));
             tvCryptoPriceChange.setText(priceChange + "%");
             if (crypto.getPriceChangePercentage24h() >= 0) {
+                ivCryptoPriceChange.setImageResource(R.drawable.ic_arrow_drop_up);
+                ivCryptoPriceChange.setColorFilter(ResourcesCompat.getColor(ContextApplication.getAppContext().getResources(), R.color.green_high, null));
                 tvCryptoPriceChange.setTextColor(ContextCompat.getColor(context, R.color.green_high));
             } else {
+                ivCryptoPriceChange.setImageResource(R.drawable.ic_arrow_drop_down);
+                ivCryptoPriceChange.setColorFilter(ResourcesCompat.getColor(ContextApplication.getAppContext().getResources(), R.color.red_low, null));
                 tvCryptoPriceChange.setTextColor(ContextCompat.getColor(context, R.color.red_low));
             }
         }

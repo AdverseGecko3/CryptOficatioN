@@ -43,7 +43,6 @@ import android.widget.Toast;
 
 import com.cryptofication.adapters.RecyclerViewCryptoListAdapter;
 import com.cryptofication.background.FetchDataAPI;
-import com.cryptofication.classes.DatabaseClass;
 import com.cryptofication.objects.Crypto;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -61,7 +60,7 @@ public class FragmentMarket extends Fragment {
     final private DataClass dc = new DataClass();
 
     private RecyclerView rwCrypto;
-    private SwipeRefreshLayout srlReloadMarket;
+    private SwipeRefreshLayout srlReloadList;
     private RecyclerViewCryptoListAdapter rwCryptoAdapter;
     private RecyclerView.LayoutManager rwCryptoManager;
     private ColorDrawable rwSwipeBackground;
@@ -72,17 +71,12 @@ public class FragmentMarket extends Fragment {
     private int lastSelectedFilterItem = 0;
     private int orderOption, orderFilter;
 
-    private DatabaseClass db;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View fView = inflater.inflate(R.layout.fragment_market, container, false);
         references(fView);
         setHasOptionsMenu(true);
-
-        // Initialize database
-        db = new DatabaseClass(getActivity(),"CryptOficatioN Database", null, 1);
 
         // Insert custom toolbar
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -97,12 +91,9 @@ public class FragmentMarket extends Fragment {
         // Set the color and icon of canvas when swiping item
         rwSwipeBackground = new ColorDrawable(getResources().getColor(R.color.yellow_favorite));
         rwSwipeIcon = AppCompatResources.getDrawable(ContextApplication.getAppContext(), R.drawable.ic_star);
-        assert rwSwipeIcon != null;
-        rwSwipeIcon = DrawableCompat.wrap(rwSwipeIcon);
-        DrawableCompat.setTint(rwSwipeIcon, getResources().getColor(R.color.super_dark_purple));
 
         // SwipeRefreshLayout listener and customization
-        srlReloadMarket.setOnRefreshListener(() -> {
+        srlReloadList.setOnRefreshListener(() -> {
             // When refreshing, load crypto data again
             if (itemSymbol.isChecked()) {
                 orderOption = 1;
@@ -117,13 +108,13 @@ public class FragmentMarket extends Fragment {
 
             loadDataCrypto();
         });
-        srlReloadMarket.setColorSchemeResources(android.R.color.holo_purple,
+        srlReloadList.setColorSchemeResources(android.R.color.holo_purple,
                 android.R.color.holo_green_dark,
                 android.R.color.holo_orange_dark,
                 android.R.color.holo_blue_dark);
 
         // Fetching data from server
-        srlReloadMarket.post(this::loadDataCrypto);
+        srlReloadList.post(this::loadDataCrypto);
         return fView;
     }
 
@@ -417,7 +408,7 @@ public class FragmentMarket extends Fragment {
             Log.d("itemSwipe", "Item position: " + position + " - Item symbol: " + cryptoSymbol);
 
             // Add the item to the database, at the Favorites table (cryptoSymbol and the  current date)
-            int resultInsert = db.insertToFavorites(cryptoSymbol,
+            int resultInsert = DataClass.db.insertToFavorites(cryptoSymbol,
                     new SimpleDateFormat("yyy-MM-dd HH:mm:ss", Locale.getDefault()).format(System.currentTimeMillis()));
 
             // Manage the returned int
@@ -439,7 +430,7 @@ public class FragmentMarket extends Fragment {
                     Snackbar.make(viewHolder.itemView, cryptoSymbol + " added to favorites",
                             Snackbar.LENGTH_LONG).setAction("UNDO", v -> {
                         // When undo is clicked, delete the item from table Favorites
-                        int resultDelete = db.deleteFromFavorites(cryptoSymbol);
+                        int resultDelete = DataClass.db.deleteFromFavorites(cryptoSymbol);
 
                         // Manage the returned int
                         switch (resultDelete) {
@@ -464,7 +455,7 @@ public class FragmentMarket extends Fragment {
 
     private void loadDataCrypto() {
         // Showing refresh animation
-        srlReloadMarket.setRefreshing(true);
+        srlReloadList.setRefreshing(true);
 
         // Start API IntentService, att
         Intent intent = new Intent(ContextApplication.getAppContext(),
@@ -539,7 +530,7 @@ public class FragmentMarket extends Fragment {
                 break;
         }
         // Showing refresh animation before making api call
-        srlReloadMarket.setRefreshing(true);
+        srlReloadList.setRefreshing(true);
 
         // Check cryptoList size
         Log.d("changeSortRecyclerView", "cryptoList size: " + dc.cryptoList.size());
@@ -555,17 +546,17 @@ public class FragmentMarket extends Fragment {
         new ItemTouchHelper(ithCallback).attachToRecyclerView(rwCrypto);
 
         // Stopping swipe refresh
-        srlReloadMarket.setRefreshing(false);
+        srlReloadList.setRefreshing(false);
     }
 
     private void stopReloadingMarket() {
         // Stopping swipe refresh
-        srlReloadMarket.setRefreshing(false);
+        srlReloadList.setRefreshing(false);
     }
 
     private void references(View view) {
-        rwCrypto = view.findViewById(R.id.rwCryptoListList);
-        srlReloadMarket = view.findViewById(R.id.srlReloadMarket);
+        rwCrypto = view.findViewById(R.id.rwMarketCryptoList);
+        srlReloadList = view.findViewById(R.id.srlMarketReload);
     }
 
     private void referencesOptionsMenu(Menu menu) {

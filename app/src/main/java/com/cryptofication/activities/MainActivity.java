@@ -5,23 +5,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cryptofication.R;
 import com.cryptofication.classes.Constants;
 import com.cryptofication.classes.DataClass;
+import com.cryptofication.classes.DatabaseClass;
 import com.cryptofication.fragments.FragmentMarket;
 import com.cryptofication.fragments.FragmentSettings;
 import com.cryptofication.fragments.FragmentFavorites;
-import com.cryptofication.interfaces.IOnBackPressed;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -33,8 +30,6 @@ public class MainActivity extends AppCompatActivity {
     private final FragmentFavorites fragmentFavorites = new FragmentFavorites();
     private final FragmentSettings fragmentSettings = new FragmentSettings();
 
-    private boolean doubleBackToExitPressedOnce = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,10 +37,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         references();
         Log.d("firstRunMainCreate", "App first run");
+
+        // Initialize database
+        DataClass.db = new DatabaseClass(this,"CryptOficatioN Database", null, 1);
+
         BottomNavigationView bottomNavigation = findViewById(R.id.navBottom);
         bottomNavigation.setSelectedItemId(Constants.MARKETS);
         DataClass.newItem = bottomNavigation.getSelectedItemId();
         bottomNavigation.setOnItemSelectedListener(navListener);
+
         getSupportFragmentManager().beginTransaction()
                 .replace(fragmentShow, fragmentMarket)
                 .disallowAddToBackStack()
@@ -178,8 +178,8 @@ public class MainActivity extends AppCompatActivity {
         // Change the buttons color and weight
         Button btnYes = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
         Button btnNo = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-        btnYes.setTextColor(ResourcesCompat.getColor(getResources(), R.color.purple_toolbar, null));
-        btnNo.setTextColor(ResourcesCompat.getColor(getResources(), R.color.purple_toolbar, null));
+        btnYes.setTextColor(ResourcesCompat.getColor(getResources(), R.color.purple_app_accent, null));
+        btnNo.setTextColor(ResourcesCompat.getColor(getResources(), R.color.purple_app_accent, null));
 
         LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnYes.getLayoutParams();
         layoutParams.weight = 10;

@@ -1,5 +1,6 @@
 package com.cryptofication.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.WindowManager;
@@ -8,11 +9,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.cryptofication.R;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends Activity {
 
     private final int SPLASH_DURATION = 3000;
 

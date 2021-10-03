@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
@@ -58,11 +59,11 @@ public class FragmentSettings extends PreferenceFragmentCompat {
                             getString(R.string.PREFERENCES), Context.MODE_PRIVATE);
                     userPrefsEditor = userPrefs.edit();
                     userPrefsEditor.putBoolean(Constants.PREF_SCHEME, spScheme.isChecked());
-                    /*if (spScheme.isChecked()) {
+                    if (spScheme.isChecked()) {
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                     } else {
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    }*/
+                    }
                     userPrefsEditor.apply();
                     break;
                 case Constants.PREF_FILTER_OPTION:
@@ -102,7 +103,7 @@ public class FragmentSettings extends PreferenceFragmentCompat {
 
             // Change the button color and weight
             Button btnDismiss = dialog.getButton(AlertDialog.BUTTON_NEUTRAL);
-            btnDismiss.setTextColor(ResourcesCompat.getColor(getResources(), R.color.purple_toolbar, null));
+            btnDismiss.setTextColor(ResourcesCompat.getColor(getResources(), R.color.purple_app_accent, null));
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnDismiss.getLayoutParams();
             layoutParams.weight = 10;
             btnDismiss.setLayoutParams(layoutParams);
@@ -160,7 +161,7 @@ public class FragmentSettings extends PreferenceFragmentCompat {
 
             // Change the button color and weight
             Button btnDismiss = dialog.getButton(AlertDialog.BUTTON_NEUTRAL);
-            btnDismiss.setTextColor(ResourcesCompat.getColor(getResources(), R.color.purple_toolbar, null));
+            btnDismiss.setTextColor(ResourcesCompat.getColor(getResources(), R.color.purple_app_accent, null));
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnDismiss.getLayoutParams();
             layoutParams.weight = 10;
             btnDismiss.setLayoutParams(layoutParams);

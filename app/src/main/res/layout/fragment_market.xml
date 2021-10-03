@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/super_dark_purple">
+    android:background="@color/purple_background">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/srlReloadMarket"
+        android:id="@+id/srlMarketReload"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:padding="2dp"
@@ -16,9 +16,11 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rwCryptoListList"
+            android:id="@+id/rwMarketCryptoList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:scrollbarThumbVertical="@color/purple_app_accent"
+            android:scrollbars="vertical" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

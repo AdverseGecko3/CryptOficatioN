@@ -4,20 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/super_dark_purple"
+    android:background="@color/purple_background"
     tools:context=".activities.MainActivity">
+
     <FrameLayout
         android:id="@+id/fragmentShow"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/navBottom"/>
+        android:layout_above="@id/navBottom" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navBottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:menu="@menu/bottom_nav"
         android:background="@drawable/recyclerview_border_round"
         app:itemIconTint="@drawable/color_nav"
-        app:itemTextColor="@drawable/color_nav"/>
+        app:itemTextColor="@drawable/color_nav"
+        app:menu="@menu/bottom_nav" />
 </RelativeLayout>
