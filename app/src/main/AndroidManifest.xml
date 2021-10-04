@@ -22,8 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <service android:name=".background.FetchDataAPI" />
+        <service android:name=".background.FetchDataAPIService" />
     </application>
 
 </manifest>

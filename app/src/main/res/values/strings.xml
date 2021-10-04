@@ -48,6 +48,7 @@
     <string name="LINKEDIN">LinkedIn</string>
     <string name="INSTAGRAM">Instagram</string>
     <string name="TWITTER">Twitter</string>
+    <string name="LOADING">Loading…</string>
     <!--endregion-->
 
     <!--region STRINGS DOTS-->

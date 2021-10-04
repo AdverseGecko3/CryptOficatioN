@@ -17,9 +17,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 
+import com.cryptofication.background.FetchDataAPIService;
 import com.cryptofication.classes.Constants;
 import com.cryptofication.classes.ContextApplication;
 import com.cryptofication.classes.DataClass;
@@ -52,6 +52,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -76,8 +77,9 @@ public class FragmentMarket extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View fView = inflater.inflate(R.layout.fragment_market, container, false);
         references(fView);
-        setHasOptionsMenu(true);
+        List<Crypto> cryptoList;
 
+        setHasOptionsMenu(true);
         // Insert custom toolbar
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setDisplayShowCustomEnabled(true);
@@ -94,6 +96,7 @@ public class FragmentMarket extends Fragment {
 
         // SwipeRefreshLayout listener and customization
         srlReloadList.setOnRefreshListener(() -> {
+            // TODO: Change where is checking which filters are selected to loadDataCrypto
             // When refreshing, load crypto data again
             if (itemSymbol.isChecked()) {
                 orderOption = 1;
@@ -113,8 +116,18 @@ public class FragmentMarket extends Fragment {
                 android.R.color.holo_orange_dark,
                 android.R.color.holo_blue_dark);
 
-        // Fetching data from server
-        srlReloadList.post(this::loadDataCrypto);
+        if (DataClass.firstRun && getArguments() != null) {
+            Log.d("FragmentMarketCreate", "Entered with arguments");
+            // If fragment has arguments means it loaded on SplashActivity (firstRun), so not execute FetchDataAPI
+            dc.cryptoList = getArguments().getParcelableArrayList("cryptoData");
+            getArguments().remove("cryptoData");
+            postFetchAPI();
+        } else {
+            Log.d("FragmentMarketCreate", "Entered without arguments");
+            // Fetch data from server
+            srlReloadList.post(this::loadDataCrypto);
+        }
+
         return fView;
     }
 
@@ -459,7 +472,7 @@ public class FragmentMarket extends Fragment {
 
         // Start API IntentService, att
         Intent intent = new Intent(ContextApplication.getAppContext(),
-                FetchDataAPI.class);
+                FetchDataAPIService.class);
         ListResultReceiver resultReceiver = new ListResultReceiver(new Handler());
         intent.putExtra("receiver", resultReceiver);
         ContextApplication.getAppContext().startService(intent);
@@ -469,6 +482,7 @@ public class FragmentMarket extends Fragment {
     }
 
     private void postFetchAPI() {
+        Log.d("postFetchAPI", "Entered postFetchAPI");
         changeSortRecyclerView(orderOption, orderFilter);
 
         // Initialize RecyclerView manager and adapter

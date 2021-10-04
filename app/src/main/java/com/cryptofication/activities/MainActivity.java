@@ -19,12 +19,17 @@ import com.cryptofication.classes.DatabaseClass;
 import com.cryptofication.fragments.FragmentMarket;
 import com.cryptofication.fragments.FragmentSettings;
 import com.cryptofication.fragments.FragmentFavorites;
+import com.cryptofication.objects.Crypto;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private int fragmentShow;
+    List<Crypto> cryptoList;
 
     private final FragmentMarket fragmentMarket = new FragmentMarket();
     private final FragmentFavorites fragmentFavorites = new FragmentFavorites();
@@ -36,6 +41,16 @@ public class MainActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.anim_fade_in_slow, R.anim.anim_fade_out_slow);
         setContentView(R.layout.activity_main);
         references();
+        Bundle extras = getIntent().getExtras();
+
+        Log.d("MainActivitySize", extras+"");
+
+        if (extras != null) {
+            cryptoList = getIntent().getParcelableArrayListExtra("cryptoData");
+            Log.d("MainActivitySize", cryptoList.size()+"");
+            extras.putParcelableArrayList("cryptoData", (ArrayList<Crypto>) cryptoList);
+            fragmentMarket.setArguments(extras);
+        }
         Log.d("firstRunMainCreate", "App first run");
 
         // Initialize database
