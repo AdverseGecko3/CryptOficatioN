@@ -48,8 +48,8 @@ public class SplashActivity extends Activity {
                     e.printStackTrace();
                 } finally {
                     startActivity(intent.putExtra("lastActivity", "splash"));
-                    finish();
                     overridePendingTransition(R.anim.anim_fade_in_slow, R.anim.anim_fade_out_slow);
+                    finish();
                 }
             }
         };
