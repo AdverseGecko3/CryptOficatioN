@@ -1,41 +1,34 @@
 package com.cryptofication.activities;
 
-import static java.lang.Thread.sleep;
-
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.cryptofication.R;
-import com.cryptofication.background.FetchDataAPI;
-import com.cryptofication.classes.ContextApplication;
-import com.cryptofication.dialogs.DialogLoading;
-import com.cryptofication.fragments.FragmentMarket;
-import com.cryptofication.objects.Crypto;
+import androidx.appcompat.app.AppCompatDelegate;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import com.cryptofication.R;
+import com.cryptofication.classes.Preferences;
 
 public class SplashActivity extends Activity {
 
-    private final int SPLASH_DURATION = 3000;
+    private final int SPLASH_DURATION = 2000;
 
     private ImageView ivLogo;
     private TextView tvPowered;
-    private AlertDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Preferences preferences = new Preferences();
+        if (preferences.loadScheme()) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
         super.onCreate(savedInstanceState);
         //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -46,30 +39,21 @@ public class SplashActivity extends Activity {
         tvPowered.setAnimation(anim);
 
         final Intent intent = new Intent(this, MainActivity.class);
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
-            try {
-                sleep(SPLASH_DURATION);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        Thread timer = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    sleep(SPLASH_DURATION);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } finally {
+                    startActivity(intent.putExtra("lastActivity", "splash"));
+                    finish();
+                    overridePendingTransition(R.anim.anim_fade_in_slow, R.anim.anim_fade_out_slow);
+                }
             }
-            // onPreExecute
-            runOnUiThread(() -> loadingDialog = new DialogLoading().showDialog(SplashActivity.this));
-
-            // Start API IntentService, att
-            List<Crypto> cryptoList = new FetchDataAPI().getDataAPI();
-
-            // Check cryptoList size
-            Log.d("loadDataCryptoSplash", "cryptoList size: " + cryptoList.size());
-
-            // onPostExecute
-            runOnUiThread(() -> loadingDialog.dismiss());
-
-            intent.putParcelableArrayListExtra("cryptoData", (ArrayList<Crypto>) cryptoList);
-            startActivity(intent);
-            finish();
-            overridePendingTransition(R.anim.anim_fade_in_slow, R.anim.anim_fade_out_slow);
-        });
+        };
+        timer.start();
     }
 
     private void references() {

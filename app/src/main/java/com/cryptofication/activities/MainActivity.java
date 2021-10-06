@@ -6,7 +6,6 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -19,17 +18,12 @@ import com.cryptofication.classes.DatabaseClass;
 import com.cryptofication.fragments.FragmentMarket;
 import com.cryptofication.fragments.FragmentSettings;
 import com.cryptofication.fragments.FragmentFavorites;
-import com.cryptofication.objects.Crypto;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private int fragmentShow;
-    List<Crypto> cryptoList;
 
     private final FragmentMarket fragmentMarket = new FragmentMarket();
     private final FragmentFavorites fragmentFavorites = new FragmentFavorites();
@@ -38,33 +32,30 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        overridePendingTransition(R.anim.anim_fade_in_slow, R.anim.anim_fade_out_slow);
         setContentView(R.layout.activity_main);
         references();
-        Bundle extras = getIntent().getExtras();
-
-        Log.d("MainActivitySize", extras+"");
-
-        if (extras != null) {
-            cryptoList = getIntent().getParcelableArrayListExtra("cryptoData");
-            Log.d("MainActivitySize", cryptoList.size()+"");
-            extras.putParcelableArrayList("cryptoData", (ArrayList<Crypto>) cryptoList);
-            fragmentMarket.setArguments(extras);
-        }
-        Log.d("firstRunMainCreate", "App first run");
 
         // Initialize database
-        DataClass.db = new DatabaseClass(this,"CryptOficatioN Database", null, 1);
+        DataClass.db = new DatabaseClass(this, "CryptOficatioN Database", null, 1);
 
         BottomNavigationView bottomNavigation = findViewById(R.id.navBottom);
-        bottomNavigation.setSelectedItemId(Constants.MARKETS);
-        DataClass.newItem = bottomNavigation.getSelectedItemId();
         bottomNavigation.setOnItemSelectedListener(navListener);
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(fragmentShow, fragmentMarket)
-                .disallowAddToBackStack()
-                .commit();
+        if (getIntent().getStringExtra("lastActivity").equals("splash")) {
+            bottomNavigation.setSelectedItemId(Constants.MARKETS);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(fragmentShow, fragmentMarket)
+                    .disallowAddToBackStack()
+                    .commit();
+        } else if (getIntent().getStringExtra("lastActivity").equals("settings")) {
+            bottomNavigation.setSelectedItemId(Constants.SETTINGS);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(fragmentShow, fragmentSettings)
+                    .disallowAddToBackStack()
+                    .commit();
+        }
+        DataClass.newItem = bottomNavigation.getSelectedItemId();
+
     }
 
     private void references() {
@@ -203,5 +194,12 @@ public class MainActivity extends AppCompatActivity {
 
         // Show the dialog
         dialog.show();
+    }
+
+    @Override
+    public void recreate() {
+        startActivity(getIntent().putExtra("lastActivity", "settings"));
+        finish();
+        overridePendingTransition(R.anim.anim_fade_in_fast, R.anim.anim_fade_out_fast);
     }
 }

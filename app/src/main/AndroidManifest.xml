@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.cryptofication">
+    package="com.cryptofication"
+    android:theme="@style/Theme.CryptOficatioN">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name="com.cryptofication.classes.ContextApplication"
         android:allowBackup="true"
+        android:fullBackupContent="true"
         android:icon="@mipmap/ic_logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_logo_round"
@@ -15,7 +17,8 @@
         <activity android:name=".activities.MainActivity" />
         <activity
             android:name=".activities.SplashActivity"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/SplashTheme"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

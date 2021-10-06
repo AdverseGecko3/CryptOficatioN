@@ -1,8 +1,16 @@
 package com.cryptofication.background;
 
+import android.app.IntentService;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.ResultReceiver;
 import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import com.cryptofication.R;
 import com.cryptofication.classes.Constants;
@@ -17,13 +25,26 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class FetchDataAPI {
+public class FetchDataAPI extends IntentService {
 
-    public List<Crypto> getDataAPI() {
+    public FetchDataAPI() {
+        super(FetchDataAPI.class.getName());
+    }
+
+    @Override
+    protected void onHandleIntent(@Nullable Intent intent) {
+        // Initialize the receiver and prepare it to bo able to send data
+        ResultReceiver receiver = null;
+        if (intent != null) {
+            receiver = intent.getParcelableExtra("receiver");
+        }
+        Bundle bundleToReceiver = new Bundle();
+
         // Build an OkHttpClient for timeouts
         OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
                 .connectTimeout(10, TimeUnit.SECONDS)
@@ -47,8 +68,8 @@ public class FetchDataAPI {
         SharedPreferences sharedPreferences = ContextApplication.getAppContext().getSharedPreferences(ContextApplication.getAppContext().
                 getString(R.string.PREFERENCES), Context.MODE_PRIVATE);
         Log.d("SharedPreferences", sharedPreferences.getString("prefCurrency", ""));
-        userCurrency = sharedPreferences.getString(Constants.PREF_CURRENCY, ContextApplication.getAppContext().getString(R.string.SETTINGS_CURRENCY_VALUE_DEFAULT));
-        userItemsPage = sharedPreferences.getString(Constants.PREF_ITEMS_PAGE, ContextApplication.getAppContext().getString(R.string.SETTINGS_ITEMS_PAGE_VALUE_DEFAULT));
+        userCurrency = sharedPreferences.getString(Constants.PREF_CURRENCY, getString(R.string.SETTINGS_CURRENCY_VALUE_DEFAULT));
+        userItemsPage = sharedPreferences.getString(Constants.PREF_ITEMS_PAGE, getString(R.string.SETTINGS_ITEMS_PAGE_VALUE_DEFAULT));
         Log.d("FetchDataAPI - Objects", String.valueOf(userCurrency));
 
         // Make the call to the API
@@ -62,19 +83,27 @@ public class FetchDataAPI {
             if (!response.isSuccessful()) {
                 // If is not successful send an empty Bundle
                 Log.d("BackgroundService", String.valueOf(response.code()));
+                if (receiver != null) {
+                    receiver.send(1, Bundle.EMPTY);
+                }
             } else {
                 // If it is successful send the List of crypto
                 List<Crypto> postsList = response.body();
-                for (Crypto post : postsList) {
-                    Log.d("BackgroundService", post.toString());
-                    cryptoList.add(post);
+                if (postsList != null) {
+                    cryptoList.addAll(postsList);
                 }
                 Log.d("BackgroundCrypto", String.valueOf(cryptoList.size()));
+                bundleToReceiver.putParcelableArrayList("cryptoList", new ArrayList<>(cryptoList));
+                if (receiver != null) {
+                    receiver.send(0, bundleToReceiver);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
             Log.d("BackgroundService", "IOException");
+            if (receiver != null) {
+                receiver.send(1, Bundle.EMPTY);
+            }
         }
-        return cryptoList;
     }
 }

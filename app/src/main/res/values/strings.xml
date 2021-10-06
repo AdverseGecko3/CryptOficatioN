@@ -48,7 +48,8 @@
     <string name="LINKEDIN">LinkedIn</string>
     <string name="INSTAGRAM">Instagram</string>
     <string name="TWITTER">Twitter</string>
-    <string name="LOADING">Loading…</string>
+    <string name="CONTENT_CRYPTO_IMAGE">Icon of the Crypto coin</string>
+    <string name="CONTENT_CRYPTO_STATUS">Icon indicating positive or negative price on the last 24 hours</string>
     <!--endregion-->
 
     <!--region STRINGS DOTS-->

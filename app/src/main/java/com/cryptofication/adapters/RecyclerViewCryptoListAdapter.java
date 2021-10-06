@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +11,10 @@ import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.preference.PreferenceManager;
@@ -63,10 +62,7 @@ public class RecyclerViewCryptoListAdapter extends RecyclerView.Adapter<Recycler
     @SuppressLint({"SetTextI18n", "DefaultLocale"})
     @Override
     public void onBindViewHolder(@NonNull ViewHolderCryptoList holder, int position) {
-        Log.d("CryptoListAdapter", "onBindViewHolder: called");
-
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ContextApplication.getAppContext());
-        Log.d("algo", sharedPreferences.getString("prefCurrency", ""));
         switch (sharedPreferences.getString("prefCurrency", "")) {
             case "eur":
                 userCurrency = context.getString(R.string.CURRENCY_EURO);
@@ -165,7 +161,7 @@ public class RecyclerViewCryptoListAdapter extends RecyclerView.Adapter<Recycler
         TextView tvCryptoPrice;
         ImageView ivCryptoPriceChange;
         TextView tvCryptoPriceChange;
-        LinearLayout parentLayout;
+        ConstraintLayout parentLayout;
 
         public ViewHolderCryptoList(@NonNull View itemView) {
             super(itemView);
@@ -182,7 +178,7 @@ public class RecyclerViewCryptoListAdapter extends RecyclerView.Adapter<Recycler
         public void assignData(Crypto crypto) {
             Picasso.get().load(crypto.getImage()).into(ivCryptoIcon);
 
-            tvCryptoSymbol.setText(crypto.getSymbol());
+            tvCryptoSymbol.setText(crypto.getSymbol().toUpperCase());
             tvCryptoName.setText(crypto.getName());
             @SuppressLint("DefaultLocale") String currentPrice = String.format("%.10f",
                     crypto.getCurrentPrice()).replaceAll("0+$", "");
