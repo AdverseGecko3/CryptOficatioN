@@ -108,10 +108,7 @@ public class FragmentMarket extends Fragment {
 
             loadDataCrypto();
         });
-        srlReloadList.setColorSchemeResources(android.R.color.holo_purple,
-                android.R.color.holo_green_dark,
-                android.R.color.holo_orange_dark,
-                android.R.color.holo_blue_dark);
+        srlReloadList.setColorSchemeResources(R.color.purple_app_accent);
 
         // Fetching data from server
         srlReloadList.post(this::loadDataCrypto);
@@ -123,9 +120,6 @@ public class FragmentMarket extends Fragment {
         // Inflate menu and find items on it
         inflater.inflate(R.menu.menu, menu);
         referencesOptionsMenu(menu);
-
-        // Get the ID of the item selected previously of the new one
-        lastSelectedFilterItem = itemName.getItemId();
 
         // Find itemSearch and viewSearch in the toolbar
         final MenuItem itemSearch = menu.findItem(R.id.mnSearch);
@@ -143,18 +137,26 @@ public class FragmentMarket extends Fragment {
                 case 0:
                     itemName.setChecked(true);
                     orderOption = 0;
+                    // Get the ID of the item selected previously of the new one
+                    lastSelectedFilterItem = itemName.getItemId();
                     break;
                 case 1:
                     itemSymbol.setChecked(true);
                     orderOption = 1;
+                    // Get the ID of the item selected previously of the new one
+                    lastSelectedFilterItem = itemSymbol.getItemId();
                     break;
                 case 2:
                     itemPrice.setChecked(true);
                     orderOption = 2;
+                    // Get the ID of the item selected previously of the new one
+                    lastSelectedFilterItem = itemPrice.getItemId();
                     break;
                 case 3:
                     itemPercentage.setChecked(true);
                     orderOption = 3;
+                    // Get the ID of the item selected previously of the new one
+                    lastSelectedFilterItem = itemPercentage.getItemId();
                     break;
                 default:
                     break;
@@ -203,6 +205,8 @@ public class FragmentMarket extends Fragment {
                 default:
                     break;
             }
+            // Get the ID of the item selected previously of the new one
+            lastSelectedFilterItem = itemName.getItemId();
         }
 
         // SearchView and itemSearch listeners
